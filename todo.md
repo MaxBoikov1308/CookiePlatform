@@ -1,3 +1,3 @@
 # todo list
-- [ ]make smt
-- [x]smt was made
+- [ ] make smt
+- [x] smt was made
