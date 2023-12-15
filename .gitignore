@@ -1,6 +1,4 @@
 # ignored files
 .idea
-infa.py
-base.py
-helper.py
 __pycache__
+test.py
