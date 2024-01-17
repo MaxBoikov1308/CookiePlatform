@@ -1,11 +1,24 @@
 import pygame as pg
+from peewee import *
+
+db = SqliteDatabase("levels/level1.db")
 
 
-class Level():
+class Level(Model):
+    name = TextField()
+    x = IntegerField()
+    y = IntegerField()
+    h = IntegerField()
+    w = IntegerField()
+
+    class Meta:
+        database = db
+
+
+class Level1(Level):
     def __init__(self):
-        self.objects = {
-            "block1": (600, 1080 - 100, 100, 100),
-        }
+        super().__init__()
+        self.objects = {}
         self.names = self.objects.keys()
     
     def draw(self, screen, color):
@@ -18,3 +31,12 @@ class Level():
     
     def add(self, name, x, y, w, h):
         self.objects[name] = (x, y, w, h)
+    
+
+
+# Level.create_table()
+# cube = Level(name="cube", x=500, y=500, h=100, w=100)
+# cube.save()
+        
+# for i in Level.select():
+    # print(i.name, i.x)
