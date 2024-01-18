@@ -19,6 +19,7 @@ class Level1(Level):
     def __init__(self):
         super().__init__()
         self.objects = {}
+        self.write()
         self.names = self.objects.keys()
     
     def draw(self, screen, color):
@@ -32,11 +33,12 @@ class Level1(Level):
     def add(self, name, x, y, w, h):
         self.objects[name] = (x, y, w, h)
     
+    def write(self):
+        for i in Level.select():
+            self.add(i.name, i.x, i.y, i.h, i.w)
+    
 
 
 # Level.create_table()
 # cube = Level(name="cube", x=500, y=500, h=100, w=100)
 # cube.save()
-        
-# for i in Level.select():
-    # print(i.name, i.x)

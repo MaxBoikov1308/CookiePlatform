@@ -10,6 +10,7 @@ class Game:
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = 30
         self.white = (255, 255, 255)
+        self.red = (255, 0, 0)
         self.black = (0, 0, 0)
         self.player = Player()
         self.player.x = 500
@@ -28,7 +29,7 @@ class Game:
             # drawing the screen
             self.SCREEN.fill(self.black)
             self.builder.build(self.SCREEN, self.white)
-            self.player.draw(self.SCREEN, self.white)
+            self.player.draw(self.SCREEN, self.red)
 
             pg.display.flip()
             self.FPS_CLOCK.tick(self.FPS)
