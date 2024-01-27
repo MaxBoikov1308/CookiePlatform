@@ -12,6 +12,7 @@ class Player:
         self.fallCount = 0
         self.x = 0
         self.y = 0
+        self.JUMP_SOUND = pg.mixer.Sound("sounds/jump_sound.mp3")
 
     def move(self):
         keys = pg.key.get_pressed()
@@ -25,6 +26,7 @@ class Player:
         if not(self.ISJUMP): 
             if keys[pg.K_SPACE]:
                 self.ISJUMP = True
+                self.JUMP_SOUND.play()
         else:
             if self.jumpCount >= 0:
                 self.y -= (self.jumpCount * abs(self.jumpCount)) * 0.5

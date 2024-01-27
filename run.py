@@ -16,6 +16,8 @@ class Game:
         self.player.x = 500
         self.player.y = 500
         self.builder = Builder()
+        pg.mixer.music.load("sounds/background.mp3")
+        pg.mixer.music.play(-1)
     
     def run(self):
         while True:
@@ -23,6 +25,11 @@ class Game:
                 if e.type == pg.QUIT:
                     pg.quit()
                     quit()
+                if e.type == pg.KEYDOWN:
+                    if e.key == pg.K_ESCAPE:
+                        pg.quit()
+                        quit()
+
 
             self.player.move()
 
