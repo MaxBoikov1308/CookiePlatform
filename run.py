@@ -18,6 +18,7 @@ class Game:
         self.builder = Builder()
         pg.mixer.music.load("sounds/background.mp3")
         pg.mixer.music.play(-1)
+        self.IS_PAUSE = False
     
     def run(self):
         while True:
@@ -29,14 +30,26 @@ class Game:
                     if e.key == pg.K_ESCAPE:
                         pg.quit()
                         quit()
+                    elif e.key == pg.K_p:
+                        if self.IS_PAUSE:
+                            self.IS_PAUSE = False
+                        else:
+                            self.IS_PAUSE = True
+                    elif e.key == pg.K_r:
+                        self.player.x, self.player.y = 500, 500  # x and y for respawn
+                        self.player.ISFALL = False
+                        self.player.ISJUMP = False
 
 
-            self.player.move()
+            if not self.IS_PAUSE:
+                self.player.move()
 
             # drawing the screen
             self.SCREEN.fill(self.black)
             self.builder.build(self.SCREEN, self.white)
             self.player.draw(self.SCREEN, self.red)
+            if self.IS_PAUSE:
+                pg.draw.rect(self.SCREEN, self.red, (300, 300, 20, 20))
 
             pg.display.flip()
             self.FPS_CLOCK.tick(self.FPS)

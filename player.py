@@ -38,7 +38,6 @@ class Player:
         if self.ISFALL:
             if self.y + self.height < 1080:
                 self.y -= (self.fallCount * abs(self.fallCount)) * 0.5
-                print(self.y)
                 self.fallCount -= 1
             else: 
                 self.ISFALL = False
