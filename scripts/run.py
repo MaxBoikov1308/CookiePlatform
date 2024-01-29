@@ -8,7 +8,7 @@ class Game:
 
         self.SCREEN = pg.display.set_mode((1920, 1080))
         self.FPS_CLOCK = pg.time.Clock()
-        self.FPS = 30
+        self.FPS = 60
         self.white = (255, 255, 255)
         self.red = (255, 0, 0)
         self.black = (0, 0, 0)
@@ -36,9 +36,7 @@ class Game:
                         else:
                             self.IS_PAUSE = True
                     elif e.key == pg.K_r:
-                        self.player.x, self.player.y = 500, 500  # x and y for respawn
-                        self.player.ISFALL = False
-                        self.player.ISJUMP = False
+                        self.player.respawn(500, 500)
 
 
             if not self.IS_PAUSE:
