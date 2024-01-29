@@ -1,4 +1,3 @@
-from player import Player
 from levels import Level1
 
 class Builder:
