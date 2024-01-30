@@ -20,6 +20,7 @@ class Game:
         pg.mixer.music.load("../sounds/background.mp3")
         pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
+        self.bg = pg.image.load("images/cave_background.png")
         self.IS_PAUSE = False
     
     def run(self):

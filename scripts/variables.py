@@ -1,3 +1,3 @@
-VOLUME = 0.1
-FPS = 60
-SPEED = 4
+VOLUME = 0.1  # music volume
+FPS = 60  # FPS
+SPEED = 4  # player speed
