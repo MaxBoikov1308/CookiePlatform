@@ -1,3 +1,3 @@
 VOLUME = 0.1
 FPS = 60
-SPEED = 10
+SPEED = 4
