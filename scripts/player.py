@@ -9,7 +9,7 @@ class Player:
 
         self.X_POSITION, self.Y_POSITION = 400, 660
         
-        self.DELTA_X = 5
+        self.DELTA_X = SPEED
 
         self.XR, self.XL = 0, 0
 
