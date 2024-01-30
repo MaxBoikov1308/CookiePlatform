@@ -4,7 +4,7 @@ from PySide2.QtGui import QBrush, QColor
 from peewee import SqliteDatabase, Model, TextField, IntegerField
 
 # Инициализация базы данных
-db = SqliteDatabase("C:/Users/n-pas/PycharmProjects/CookiePlatform/levels/level1.db")
+db = SqliteDatabase("C:/Users/n-pas/PycharmProjects/CookiePlatform/levels/level2.db")
 
 
 class Level(Model):
@@ -43,6 +43,9 @@ class GraphicsRectItem(QGraphicsRectItem):
         super(GraphicsRectItem, self).__init__(x, y, w, h)
         self.is_block = is_block
 
+    def save_to_database(self, x, y, w, h):
+        Level.create(name="object", x=x, y=y, h=h, w=w)
+
 
 class GraphicsScene(QGraphicsScene):
     def __init__(self, object_manager):
@@ -50,11 +53,23 @@ class GraphicsScene(QGraphicsScene):
         self.object_manager = object_manager
         self.selected_object = "block"
         self.draw_grid()
+        self.load_objects_from_database()
 
     def draw_grid(self):
         for x in range(0, 501, self.object_manager.grid_size):
             for y in range(0, 501, self.object_manager.grid_size):
                 self.addRect(x, y, self.object_manager.grid_size, self.object_manager.grid_size)
+
+    def load_objects_from_database(self):
+        for obj in Level.select():
+            x, y, w, h = obj.x, obj.y, obj.w, obj.h
+            is_block = True  # Assuming all objects loaded from the database are blocks
+            color = QColor(255, 0, 0) if is_block else QColor(0, 255, 0)
+            brush = QBrush(color)
+            graphics_rect_item = self.object_manager.add_object(x, y, w, h, is_block)
+            graphics_rect_item.setBrush(brush)
+            self.addItem(graphics_rect_item)
+
 
     def mousePressEvent(self, event):
         x = int(event.scenePos().x() // self.object_manager.grid_size) * self.object_manager.grid_size
@@ -68,9 +83,11 @@ class GraphicsScene(QGraphicsScene):
         obj = self.object_manager.add_object(x, y, w, h, is_block)
         obj.setBrush(brush)
         self.addItem(obj)
+        obj.save_to_database(x, y, w, h)
 
     def set_selected_object(self, obj):
         self.selected_object = obj
+
 
 
 class MainWindow(QMainWindow):
