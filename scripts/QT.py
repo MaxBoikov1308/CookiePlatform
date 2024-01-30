@@ -1,149 +1,110 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsRectItem, QPushButton, QVBoxLayout, QWidget, QInputDialog, QComboBox
-from PyQt5.QtCore import Qt, QThreadPool, QRunnable, QObject, pyqtSignal
 import sys
-import peewee
-import json
+from PySide2.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsRectItem, QPushButton, QVBoxLayout, QWidget
+from PySide2.QtGui import QBrush, QColor
+from peewee import SqliteDatabase, Model, TextField, IntegerField
 
-db = peewee.SqliteDatabase('maps.db')
+# Инициализация базы данных
+db = SqliteDatabase("C:/Users/n-pas/PycharmProjects/CookiePlatform/levels/level1.db")
 
-class Map(peewee.Model):
-    name = peewee.CharField()
-    data = peewee.BlobField()
+
+class Level(Model):
+    name = TextField()
+    x = IntegerField()
+    y = IntegerField()
+    h = IntegerField()
+    w = IntegerField()
 
     class Meta:
         database = db
 
-class DraggableRectItem(QGraphicsRectItem):
-    def __init__(self, x, y, width, height, cell_size):
-        super().__init__(x, y, width, height)
-        self.setFlag(QGraphicsRectItem.ItemIsMovable)
-        self.cell_size = cell_size
-        self.snap_to_grid()
 
-    def snap_to_grid(self):
-        x = round(self.x() / self.cell_size) * self.cell_size
-        y = round(self.y() / self.cell_size) * self.cell_size
-        self.setPos(x, y)
+# Создание таблицы, если её нет
+db.connect()
+db.create_tables([Level], safe=True)
 
-class WorkerSignals(QObject):
-    finished = pyqtSignal()
 
-class Worker(QRunnable):
-    def __init__(self, func, *args):
-        super(Worker, self).__init__()
-        self.func = func
-        self.args = args
-        self.signals = WorkerSignals()
-
-    def run(self):
-        self.func(*self.args)
-        self.signals.finished.emit()
-
-class MapEditor(QMainWindow):
+class ObjectManager:
     def __init__(self):
-        super().__init__()
+        self.objects = []
+        self.grid_size = 50
 
-        self.scene = QGraphicsScene(self)
-        self.view = QGraphicsView(self.scene)
+    def add_object(self, x, y, w, h, is_block):
+        obj = GraphicsRectItem(x, y, w, h, is_block)
+        self.objects.append(obj)
+        return obj
 
-        self.cell_size = 50  # Размер клетки
-        self.grid_width = 10  # Количество клеток по горизонтали
-        self.grid_height = 10  # Количество клеток по вертикали
+    def save_to_database(self):
+        for obj in self.objects:
+            Level.create(name="object", x=obj.x(), y=obj.y(), h=obj.rect().height(), w=obj.rect().width())
 
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
 
-        layout = QVBoxLayout(central_widget)
-        layout.addWidget(self.view)
+class GraphicsRectItem(QGraphicsRectItem):
+    def __init__(self, x, y, w, h, is_block):
+        super(GraphicsRectItem, self).__init__(x, y, w, h)
+        self.is_block = is_block
 
-        self.init_ui()
 
-    def init_ui(self):
-        self.btnAddBlock = QPushButton('Add Block', self)
-        self.btnAddBlock.clicked.connect(self.add_block)
-
-        self.btnAddSpike = QPushButton('Add Spike', self)
-        self.btnAddSpike.clicked.connect(self.add_spike)
-
-        self.btnSaveMap = QPushButton('Save Map', self)
-        self.btnSaveMap.clicked.connect(self.save_map_to_db)
-
-        self.comboObject = QComboBox(self)
-        self.comboObject.addItem("Block")
-        self.comboObject.addItem("Spike")
-
-        layout = self.layout()
-
-        layout.addWidget(self.comboObject)
-        layout.addWidget(self.btnAddBlock)
-        layout.addWidget(self.btnAddSpike)
-        layout.addWidget(self.btnSaveMap)
-
-        self.view.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+class GraphicsScene(QGraphicsScene):
+    def __init__(self, object_manager):
+        super(GraphicsScene, self).__init__()
+        self.object_manager = object_manager
+        self.selected_object = "block"
         self.draw_grid()
 
-        self.threadpool = QThreadPool()
-
     def draw_grid(self):
-        for row in range(self.grid_height):
-            for col in range(self.grid_width):
-                rect = QGraphicsRectItem(col * self.cell_size, row * self.cell_size, self.cell_size, self.cell_size)
-                rect.setPen(Qt.lightGray)
-                self.scene.addItem(rect)
+        for x in range(0, 501, self.object_manager.grid_size):
+            for y in range(0, 501, self.object_manager.grid_size):
+                self.addRect(x, y, self.object_manager.grid_size, self.object_manager.grid_size)
 
-    def add_block(self):
-        x, y = self.snap_to_grid(self.view.mapToScene(self.view.viewport().rect().topLeft()))
-        worker = Worker(self.add_block_at_position, x, y)
-        self.threadpool.start(worker)
+    def mousePressEvent(self, event):
+        x = int(event.scenePos().x() // self.object_manager.grid_size) * self.object_manager.grid_size
+        y = int(event.scenePos().y() // self.object_manager.grid_size) * self.object_manager.grid_size
+        w = self.object_manager.grid_size
+        h = self.object_manager.grid_size
 
-    def add_spike(self):
-        x, y = self.snap_to_grid(self.view.mapToScene(self.view.viewport().rect().topLeft()))
-        worker = Worker(self.add_spike_at_position, x, y)
-        self.threadpool.start(worker)
+        is_block = self.selected_object == "block"
+        color = QColor(255, 0, 0) if is_block else QColor(0, 255, 0)
+        brush = QBrush(color)
+        obj = self.object_manager.add_object(x, y, w, h, is_block)
+        obj.setBrush(brush)
+        self.addItem(obj)
 
-    def save_map_to_db(self):
-        map_name, ok = self.get_text_input('Enter map name:', 'Save Map')
-        if ok and map_name:
-            map_data = self.serialize_map_data()
-            Map.create(name=map_name, data=map_data)
-            print(f'Map "{map_name}" saved to the database.')
+    def set_selected_object(self, obj):
+        self.selected_object = obj
 
-    def get_text_input(self, prompt, title):
-        text, ok = QInputDialog.getText(self, title, prompt)
-        return text, ok
 
-    def serialize_map_data(self):
-        items = []
-        for item in self.scene.items():
-            if isinstance(item, DraggableRectItem):
-                item_data = {
-                    'type': 'block' if item.brush().color() == Qt.black else 'spike',
-                    'x': item.x(),
-                    'y': item.y(),
-                    'width': item.rect().width(),
-                    'height': item.rect().height(),
-                }
-                items.append(item_data)
-        return json.dumps(items)
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
 
-    def add_block_at_position(self, x, y):
-        block = DraggableRectItem(x, y, self.cell_size, self.cell_size, self.cell_size)
-        block.snap_to_grid()
-        self.scene.addItem(block)
+        self.object_manager = ObjectManager()
+        self.scene = GraphicsScene(self.object_manager)
+        self.view = QGraphicsView(self.scene)
 
-    def add_spike_at_position(self, x, y):
-        spike = DraggableRectItem(x, y, self.cell_size, self.cell_size, self.cell_size)
-        spike.setBrush(Qt.red)
-        spike.snap_to_grid()
-        self.scene.addItem(spike)
+        block_button = QPushButton("Block", self)
+        block_button.clicked.connect(lambda: self.scene.set_selected_object("block"))
 
-    def snap_to_grid(self, position):
-        x = round(position.x() / self.cell_size) * self.cell_size
-        y = round(position.y() / self.cell_size) * self.cell_size
-        return x, y
+        spike_button = QPushButton("Spike", self)
+        spike_button.clicked.connect(lambda: self.scene.set_selected_object("spike"))
 
-if __name__ == '__main__':
+        save_button = QPushButton("Save Database", self)
+        save_button.clicked.connect(self.object_manager.save_to_database)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.view)
+        layout.addWidget(block_button)
+        layout.addWidget(spike_button)
+        layout.addWidget(save_button)
+
+        central_widget = QWidget()
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+        self.setGeometry(100, 100, 600, 600)
+        self.setWindowTitle("Level Editor")
+
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main_window = MapEditor()
-    main_window.show()
+    window = MainWindow()
+    window.show()
     sys.exit(app.exec_())

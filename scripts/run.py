@@ -1,6 +1,7 @@
+from variables import *
 import pygame as pg
 from builder import Builder
-from player import Player
+from scripts.player import Player
 
 class Game:
     def __init__(self):
@@ -8,7 +9,7 @@ class Game:
 
         self.SCREEN = pg.display.set_mode((1920, 1080))
         self.FPS_CLOCK = pg.time.Clock()
-        self.FPS = 60
+        self.FPS = FPS
         self.white = (255, 255, 255)
         self.red = (255, 0, 0)
         self.black = (0, 0, 0)
@@ -17,6 +18,7 @@ class Game:
         self.player.y = 500
         self.builder = Builder()
         pg.mixer.music.load("sounds/background.mp3")
+        pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
         self.IS_PAUSE = False
     
