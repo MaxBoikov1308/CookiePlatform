@@ -16,8 +16,8 @@ class Game:
         self.player = Player()
         self.player.x = 500
         self.player.y = 500
-        self.builder = Builder()
-        pg.mixer.music.load("sounds/background.mp3")
+        self.builder = Builder(self.SCREEN)
+        pg.mixer.music.load("../sounds/background.mp3")
         pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
         self.IS_PAUSE = False
@@ -46,7 +46,7 @@ class Game:
 
             # drawing the screen
             self.SCREEN.fill(self.black)
-            self.builder.build(self.SCREEN, self.white)
+            self.builder.draw(self.white)
             self.player.draw(self.SCREEN, self.red)
             if self.IS_PAUSE:
                 pg.draw.rect(self.SCREEN, self.red, (300, 300, 20, 20))
