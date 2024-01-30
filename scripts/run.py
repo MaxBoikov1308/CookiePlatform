@@ -1,7 +1,7 @@
 from variables import *
 import pygame as pg
 from builder import Builder
-from scripts.player import Player
+from player import Player
 
 class Game:
     def __init__(self):
