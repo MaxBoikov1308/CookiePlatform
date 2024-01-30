@@ -13,8 +13,11 @@ class Level(Model):
     class Meta:
         database = db
 
+
 class Builder:
     def __init__(self, screen):
+        self.level = Level
+        self.objects = self.load_objects_from_db()
         self.screen = screen
         self.objects = self.load_objects_from_db()
 

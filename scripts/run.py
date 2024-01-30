@@ -46,8 +46,7 @@ class Game:
                 self.player.move()
 
             # drawing the screen
-
-
+            self.SCREEN.fill(self.black)
             self.SCREEN.blit(self.bg, (0, 0))
             self.builder.draw(self.white)
             self.player.draw(self.SCREEN)
