@@ -56,15 +56,22 @@ class GraphicsScene(QGraphicsScene):
         self.load_objects_from_database()
 
     def draw_grid(self):
-        for x in range(0, 501, self.object_manager.grid_size):
-            for y in range(0, 501, self.object_manager.grid_size):
+        for x in range(0, 1921, self.object_manager.grid_size):
+            for y in range(0, 1081, self.object_manager.grid_size):
                 self.addRect(x, y, self.object_manager.grid_size, self.object_manager.grid_size)
 
     def load_objects_from_database(self):
         for obj in Level.select():
             x, y, w, h = obj.x, obj.y, obj.w, obj.h
             is_block = True  # Assuming all objects loaded from the database are blocks
-            color = QColor(255, 0, 0) if is_block else QColor(0, 255, 0)
+            is_free = False
+
+            if is_block:
+                color = QColor(255, 0, 0)
+            elif is_free:
+                color = QColor(255, 255, 255)
+            else:
+                QColor(0, 255, 0)
             brush = QBrush(color)
             graphics_rect_item = self.object_manager.add_object(x, y, w, h, is_block)
             graphics_rect_item.setBrush(brush)
@@ -78,9 +85,17 @@ class GraphicsScene(QGraphicsScene):
         h = self.object_manager.grid_size
 
         is_block = self.selected_object == "block"
-        color = QColor(255, 0, 0) if is_block else QColor(0, 255, 0)
+        is_free = self.selected_object == "delite"
+
+        if is_block:
+            color = QColor(255, 0, 0)
+        elif is_free:
+            color = QColor(255, 255, 255)
+        else:
+            QColor(0, 255, 0)
+
         brush = QBrush(color)
-        obj = self.object_manager.add_object(x, y, w, h, is_block)
+        obj = self.object_manager.add_object(x, y, w, h, is_block - is_free)
         obj.setBrush(brush)
         self.addItem(obj)
         obj.save_to_database(x, y, w, h)
@@ -104,6 +119,9 @@ class MainWindow(QMainWindow):
         spike_button = QPushButton("Spike", self)
         spike_button.clicked.connect(lambda: self.scene.set_selected_object("spike"))
 
+        delite_button = QPushButton("delite", self)
+        delite_button.clicked.connect(lambda: self.scene.set_selected_object("delite"))
+
         save_button = QPushButton("Save Database", self)
         save_button.clicked.connect(self.object_manager.save_to_database)
 
@@ -111,12 +129,13 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.view)
         layout.addWidget(block_button)
         layout.addWidget(spike_button)
+        layout.addWidget(delite_button)
         layout.addWidget(save_button)
 
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
-        self.setGeometry(100, 100, 600, 600)
+        self.setGeometry(0, 0, 960, 540)
         self.setWindowTitle("Level Editor")
 
 
