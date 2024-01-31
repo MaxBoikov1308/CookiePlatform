@@ -7,6 +7,8 @@ class Game:
     def __init__(self):
         pg.init()
 
+        pg.font.init()
+        self.font = pg.font.SysFont('Comic Sans MS', 70)
         self.SCREEN = pg.display.set_mode((1920, 1080))
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = FPS
@@ -17,10 +19,10 @@ class Game:
         self.player.x = 500
         self.player.y = 500
         self.builder = Builder(self.SCREEN)
-        pg.mixer.music.load("sounds/background1.mp3")
+        pg.mixer.music.load("../sounds/background1.mp3")
         pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
-        self.bg = pg.image.load("images/cave_background.png")
+        self.bg = pg.image.load("../images/cave_background.png")
         self.IS_PAUSE = False
     
     def run(self):
@@ -51,7 +53,8 @@ class Game:
             self.builder.draw(self.white)
             self.player.draw(self.SCREEN)
             if self.IS_PAUSE:
-                pg.draw.rect(self.SCREEN, self.red, (300, 300, 20, 20))
+                text = self.font.render('PAUSE', False, (0, 0, 0))
+                self.SCREEN.blit(text, (820, 400))
 
             pg.display.flip()
             self.FPS_CLOCK.tick(self.FPS)

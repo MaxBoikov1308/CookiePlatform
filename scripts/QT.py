@@ -4,7 +4,7 @@ from PySide2.QtGui import QBrush, QColor
 from peewee import SqliteDatabase, Model, TextField, IntegerField
 
 # Инициализация базы данных
-db = SqliteDatabase("C:/Users/n-pas/PycharmProjects/CookiePlatform/levels/level2.db")
+db = SqliteDatabase("levels/level1.db")
 
 
 class Level(Model):
