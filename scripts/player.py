@@ -16,7 +16,7 @@ class Player:
         self.ISJUMP = False
 
         self.Y_GRAVITY = 1
-        self.JUMP_HEIGHT = 15
+        self.JUMP_HEIGHT = 15 
         self.Y_VELOCITY = self.JUMP_HEIGHT
 
         self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player_r.png"), (28, 60))
@@ -91,3 +91,4 @@ class Player:
         self.ISFALL = False
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT
+        self.move()
