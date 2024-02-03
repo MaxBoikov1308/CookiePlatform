@@ -14,6 +14,8 @@ class Player:
         self.XR, self.XL = 0, 0
 
         self.ISJUMP = False
+        self.IS_RIGHT_SPRINT = False
+        self.IS_LEFT_SPRINT = False
 
         self.Y_GRAVITY = 1
         self.JUMP_HEIGHT = 15 
@@ -31,18 +33,24 @@ class Player:
     def move(self):
         keys = pg.key.get_pressed()
         self.x_old = self.X_POSITION
-        if keys[pg.K_a] and self.x > self.DELTA_X: 
+        if keys[pg.K_a] and self.x > self.DELTA_X:
+            self.IS_RIGHT_SPRINT = False
             self.XL += 1
             self.XR = 0
             if self.XL >= 25:
+                self.IS_LEFT_SPRINT = True
+            if self.IS_LEFT_SPRINT:
                 self.X_POSITION -= 2 * self.DELTA_X
             else:
                 self.X_POSITION -= self.DELTA_X
 
-        if keys[pg.K_d] and self.x < 1920 - self.DELTA_X - 50:  
+        if keys[pg.K_d] and self.x < 1920 - self.DELTA_X - 50:
+            self.IS_LEFT_SPRINT = False
             self.XR += 1
             self.XL = 0
             if self.XR >= 25:
+                self.IS_RIGHT_SPRINT = True
+            if self.IS_RIGHT_SPRINT:
                 self.X_POSITION += 2 * self.DELTA_X
             else:
                 self.X_POSITION += self.DELTA_X
@@ -91,5 +99,5 @@ class Player:
         self.ISFALL = False
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT
+        self.IS_LEFT_SPRINT = self.IS_RIGHT_SPRINT = False
         self.move()
-        self.XL = self.XR = 0
