@@ -100,7 +100,13 @@ class Player:
         if self.PHASE < 10:
             if self.ISRIGHT:
                 if self.ISSTANDING:
-                    screen.blit(self.STANDING_SURFACE_RIGHT, self.player_rect)
+                    if self.ISJUMP:
+                            if self.JUMP_PHASE <= 15:
+                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
+                            else:
+                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+                    else:
+                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
                 else:
                     if self.IS_RIGHT_SPRINT:
                         if self.ISJUMP:
@@ -114,7 +120,13 @@ class Player:
                         screen.blit(self.STANDING_SURFACE_RIGHT, self.player_rect)
             else:
                 if self.ISSTANDING:
-                    screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
+                    if self.ISJUMP:
+                            if self.JUMP_PHASE <= 15:
+                                screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
+                            else:
+                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
+                    else:
+                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
                 else:
                     if self.IS_LEFT_SPRINT:
                         if self.ISJUMP:
@@ -129,7 +141,13 @@ class Player:
         else:
             if self.ISRIGHT:
                 if self.ISSTANDING:
-                    screen.blit(self.STANDING_SURFACE_RIGHT, self.player_rect)
+                    if self.ISJUMP:
+                            if self.JUMP_PHASE <= 15:
+                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
+                            else:
+                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+                    else:
+                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
                 else:
                     if self.IS_RIGHT_SPRINT:
                         if self.ISJUMP:
@@ -143,7 +161,13 @@ class Player:
                         screen.blit(self.STANDING_SURFACE_RIGHT_1, self.player_rect)
             else:
                 if self.ISSTANDING:
-                    screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
+                    if self.ISJUMP:
+                            if self.JUMP_PHASE <= 15:
+                                screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
+                            else:
+                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
+                    else:
+                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
                 else:
                     if self.IS_LEFT_SPRINT:
                         if self.ISJUMP:
