@@ -18,6 +18,8 @@ class Menue:
         self.redactor_coords_list = self.get_coords_list(self.level_coords)
         self.exit_coords = self.get_coords("exit")
         self.exit_coords_list = self.get_coords_list(self.exit_coords)
+        self.pause_coords = self.get_coords("pause")
+        self.pause_coords_list = self.get_coords_list(self.pause_coords)
     
     def draw(self):
         self.SCREEN.blit(self.bg, (0, 0))
@@ -40,6 +42,8 @@ class Menue:
             return (800, 700, 320, 70)
         elif name == "exit":
             return (800, 800, 320, 70)
+        elif name == "pause":
+            return (910, 550, 100, 100)
     
     def get_coords_list(self, n):
         s = []

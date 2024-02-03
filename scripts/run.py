@@ -50,7 +50,15 @@ class Game:
                         elif e.key == pg.K_r:
                             self.player.respawn(500, 500)
                             self.player.draw(self.SCREEN)
-
+                    if e.type == pg.MOUSEBUTTONDOWN:
+                        if e.button == 1:
+                            if self.IS_PAUSE:
+                                if self.menue.pause_coords_list.__contains__(e.pos):
+                                    self.menue.ISGAME = False
+                                    self.player.respawn(500, 500)
+                                    self.IS_PAUSE = False
+                                    self.change_music(self.menue.ISGAME)
+                                    self.player.XL = self.player.XR = 0
 
                 if not self.IS_PAUSE:
                     self.player.move()
@@ -62,7 +70,8 @@ class Game:
                 self.player.draw(self.SCREEN)
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
-                    self.SCREEN.blit(text, (820, 400))
+                    self.SCREEN.blit(text, (840, 400))
+                    pg.draw.rect(self.SCREEN, (240, 0, 0), (910, 550, 100, 100))
 
                 pg.display.flip()
                 self.FPS_CLOCK.tick(self.FPS)
