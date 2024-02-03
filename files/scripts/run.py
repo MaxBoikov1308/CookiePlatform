@@ -24,8 +24,8 @@ class Game:
         self.player = Player()
         self.builder = Builder(self.SCREEN)
         self.menue = Menue(self.SCREEN, self.BUTTON_SOUND)
-        self.player.x = 500
-        self.player.y = 500
+        self.player.x = 700
+        self.player.y = 700
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
     
@@ -39,7 +39,7 @@ class Game:
                     if e.type == pg.KEYDOWN:
                         if e.key == pg.K_ESCAPE:
                             self.menue.ISGAME = False
-                            self.player.respawn(500, 500)
+                            self.player.respawn(700, 700)
                             self.IS_PAUSE = False
                             self.change_music(self.menue.ISGAME)
                             self.player.XL = self.player.XR = 0
@@ -49,14 +49,14 @@ class Game:
                             else:
                                 self.IS_PAUSE = True
                         elif e.key == pg.K_r:
-                            self.player.respawn(500, 500)
+                            self.player.respawn(700, 700)
                             self.player.draw(self.SCREEN)
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
                             if self.IS_PAUSE:
                                 if self.menue.pause_coords_list.__contains__(e.pos):
                                     self.menue.ISGAME = False
-                                    self.player.respawn(500, 500)
+                                    self.player.respawn(700, 700)
                                     self.IS_PAUSE = False
                                     self.change_music(self.menue.ISGAME)
                                     self.player.XL = self.player.XR = 0
@@ -73,6 +73,10 @@ class Game:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
                     self.SCREEN.blit(text, (840, 400))
                     pg.draw.rect(self.SCREEN, (240, 0, 0), (910, 550, 100, 100))
+                
+                if self.player.PHASE == 19:
+                    self.player.PHASE = 0
+                self.player.PHASE += 1
 
                 pg.display.flip()
                 self.FPS_CLOCK.tick(self.FPS)
