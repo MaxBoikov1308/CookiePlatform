@@ -16,8 +16,8 @@ class Game:
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = FPS
         self.BUTTON_SOUND = pg.mixer.Sound("../sounds/button_sound.mp3")
-        self.bg = pg.image.load("../images/jungle_background.png")
         self.BUTTON_SOUND.set_volume(VOLUME)
+        self.bg = pg.image.load("../images/jungle_background.png")
         self.white = (255, 255, 255)
         self.red = (255, 0, 0)
         self.black = (0, 0, 0)
