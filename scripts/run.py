@@ -4,6 +4,7 @@ from builder import Builder
 from player import Player
 from main_menue import Menue
 
+
 class Game:
     def __init__(self):
         pg.init()
@@ -37,7 +38,10 @@ class Game:
                     if e.type == pg.KEYDOWN:
                         if e.key == pg.K_ESCAPE:
                             self.menue.ISGAME = False
+                            self.player.respawn(500, 500)
+                            self.IS_PAUSE = False
                             self.change_music(self.menue.ISGAME)
+                            self.player.XL = self.player.XR = 0
                         elif e.key == pg.K_p:
                             if self.IS_PAUSE:
                                 self.IS_PAUSE = False
@@ -73,11 +77,14 @@ class Game:
                             quit()
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
-                            print(e.pos)
                             if self.menue.start_coords_list.__contains__(e.pos):
                                 self.menue.ISGAME = True
                                 self.menue.button_sound.play()
                                 self.change_music(self.menue.ISGAME)
+                            if self.menue.exit_coords_list.__contains__(e.pos):
+                                self.menue.button_sound.play()
+                                pg.quit()
+                                quit()
                             
                 self.SCREEN.fill(self.black)
                 self.menue.draw()

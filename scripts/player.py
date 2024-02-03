@@ -92,3 +92,4 @@ class Player:
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT
         self.move()
+        self.XL = self.XR = 0
