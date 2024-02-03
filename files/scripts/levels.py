@@ -13,5 +13,3 @@ class Level(Model):
 
     class Meta:
         database = db
-
-

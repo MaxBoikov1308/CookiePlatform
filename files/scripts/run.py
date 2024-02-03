@@ -12,6 +12,7 @@ class Game:
         pg.font.init()
         self.font = pg.font.SysFont('Comic Sans MS', 70)
         self.SCREEN = pg.display.set_mode((1920, 1080))
+        pg.display.set_caption("Cookie Platform")
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = FPS
         self.BUTTON_SOUND = pg.mixer.Sound("../sounds/button_sound.mp3")

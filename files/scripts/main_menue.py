@@ -6,7 +6,9 @@ class Menue:
         self.ISGAME = False
         self.SCREEN = screen
         self.bg = pg.image.load("../images/city_background.png")
-        self.logo = pg.image.load("../images/icon.ico")
+        self.logo = pg.transform.scale(pg.image.load("../images/cookie.png"), (300, 300))
+        self.font = pg.font.SysFont('Comic Sans MS', 80)
+        self.text_logo = self.font.render('Cookie Platform', True, (0, 0, 0))
         self.button_sound = sound
         self.start_coords = self.get_coords("start")
         self.start_coords_list = self.get_coords_list(self.start_coords)
@@ -23,13 +25,14 @@ class Menue:
     
     def draw(self):
         self.SCREEN.blit(self.bg, (0, 0))
-        self.SCREEN.blit(self.logo, (830, 100))
-        pg.draw.rect(self.SCREEN, (0, 240, 0), (760, 290, 400, 70))
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.start_coords)
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.level_coords)
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.score_coords)
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.redactor_coords)
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.exit_coords)
+        self.SCREEN.blit(self.logo, (800, 50))
+        self.SCREEN.blit(self.text_logo, (680, 290))
+        # (760, 290, 400, 70) здесь заменяем на blit и убираем текст (self.text_logo)
+        pg.draw.rect(self.SCREEN, (240, 0, 0), self.start_coords)  # здесь поменять на blit
+        pg.draw.rect(self.SCREEN, (240, 0, 0), self.level_coords)  # здесь поменять на blit
+        pg.draw.rect(self.SCREEN, (240, 0, 0), self.score_coords)  # здесь поменять на blit
+        pg.draw.rect(self.SCREEN, (240, 0, 0), self.redactor_coords)  # здесь поменять на blit
+        pg.draw.rect(self.SCREEN, (240, 0, 0), self.exit_coords)  # здесь поменять на blit
     
     def get_coords(self, name):
         if name == "start":
