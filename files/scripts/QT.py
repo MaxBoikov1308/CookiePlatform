@@ -21,7 +21,7 @@ class ObjectManager:
     
 class GraficsScene(QGraphicsScene):
     def __init__(self, object_manager):
-        super(GraphicsScene, self).__init__()
+        super(QGraphicsScene, self).__init__()
         self.object_manager = object_manager
         self.selected_object = "{}"
         self.draw_grid()
