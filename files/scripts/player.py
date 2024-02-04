@@ -81,21 +81,21 @@ class Player:
                 self.Y_VELOCITY = self.JUMP_HEIGHT
 
         if self.ISJUMP:
-            if self.rotation == 'r':
+            if self.ROTATION == 'r':
                 self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
             else:
                 self.player_rect = self.JUMPING_SURFACE_LEFT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
         else:
-            if self.rotation == 'r':
+            if self.ROTATION == 'r':
                 self.player_rect = self.STANDING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
             else:
                 self.player_rect = self.STANDING_SURFACE_LEFT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
         
         if self.X_POSITION > self.x_old:
-            self.rotation = 'r'
+            self.ROTATION = 'r'
             self.ISSTANDING = False
         elif self.X_POSITION == self.x_old:
-            self.rotation = self.rotation
+            self.ROTATION = self.ROTATION
             self.ISSTANDING = True
         else:
             self.ISSTANDING = False
@@ -112,69 +112,81 @@ class Player:
             else:
                 if self.ISSTANDING:
                     if self.ISJUMP:
-                            if self.JUMP_PHASE <= 15:
+                        if self.JUMP_PHASE <= 15:
+                            if self.ROTATION == 'r':
+                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
+                            else:
                                 screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
+                        else:
+                            if self.ROTATION == 'r':
+                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
                             else:
                                 screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
-                    else:
-                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
                 else:
-                    if self.IS_LEFT_SPRINT:
+                    if self.IS_SPRINT:
                         if self.ISJUMP:
                             if self.JUMP_PHASE <= 15:
-                                screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
+                                if self.ROTATION == 'r':
+                                    screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
+                                else:
+                                    screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
                             else:
-                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
+                                if self.ROTATION == 'r':
+                                    screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+                                else:
+                                    screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
                         else:
-                            screen.blit(self.RUNNING_SURFACE_LEFT, self.player_rect)
+                            if self.ROTATION == 'r':
+                                screen.blit(self.RUNNING_SURFACE_RIGHT, self.player_rect)
+                            else:
+                                screen.blit(self.RUNNING_SURFACE_LEFT, self.player_rect)
                     else:
-                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
+                        if self.ROTATION == 'r':
+                            screen.blit(self.STANDING_SURFACE_RIGHT, self.player_rect)
+                        else:
+                            screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
         else:
-            if self.ISRIGHT:
-                if self.ISSTANDING:
-                    if self.ISJUMP:
-                            if self.JUMP_PHASE <= 15:
-                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
-                            else:
-                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
-                    else:
-                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
-                else:
-                    if self.IS_RIGHT_SPRINT:
-                        if self.ISJUMP:
-                            if self.JUMP_PHASE <= 15:
-                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
-                            else:
-                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+            if self.ISSTANDING:
+                if self.ISJUMP:
+                    if self.JUMP_PHASE <= 15:
+                        if self.ROTATION == 'r':
+                            screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
                         else:
-                            screen.blit(self.RUNNING_SURFACE_RIGHT_1, self.player_rect)
+                            screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
                     else:
-                        screen.blit(self.STANDING_SURFACE_RIGHT_1, self.player_rect)
+                        if self.ROTATION == 'r':
+                            screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+                        else:
+                            screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
+                else:
+                    if self.ROTATION == 'r':
+                            screen.blit(self.STANDING_SURFACE_RIGHT, self.player_rect)
+                    else:
+                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)           
             else:
-                if self.ISSTANDING:
+                if self.IS_SPRINT:
                     if self.ISJUMP:
-                            if self.JUMP_PHASE <= 15:
-                                screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
+                        if self.JUMP_PHASE <= 15:
+                            if self.ROTATION == 'r':
+                                screen.blit(self.JUMPING_SURFACE_RIGHT, self.player_rect)
                             else:
-                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
-                    else:
-                        screen.blit(self.STANDING_SURFACE_LEFT, self.player_rect)
-                else:
-                    if self.IS_LEFT_SPRINT:
-                        if self.ISJUMP:
-                            if self.JUMP_PHASE <= 15:
                                 screen.blit(self.JUMPING_SURFACE_LEFT, self.player_rect)
-                            else:
-                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
                         else:
-                            screen.blit(self.RUNNING_SURFACE_LEFT_1, self.player_rect)
+                            if self.ROTATION == 'r':
+                                screen.blit(self.JUMPING_SURFACE_RIGHT_1, self.player_rect)
+                            else:
+                                screen.blit(self.JUMPING_SURFACE_LEFT_1, self.player_rect)
+                else:
+                    if self.ROTATION == 'r':
+                        screen.blit(self.STANDING_SURFACE_RIGHT_1, self.player_rect)
                     else:
                         screen.blit(self.STANDING_SURFACE_LEFT_1, self.player_rect)
+
 
     def respawn(self, x0, y0):
         self.X_POSITION, self.Y_POSITION = x0, y0
         self.ISFALL = False
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT
-        self.IS_LEFT_SPRINT = self.IS_RIGHT_SPRINT = False
+        self.IS_SPRINT = False
         self.move()
