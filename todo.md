@@ -1,7 +1,14 @@
 # todo list
-- [x] write the class of the player and mobs
+- [x] write the class of the player
 - [x] add music and sounds
 - [x] draw and add textures
+- [x] add good handling
+- [x] add pause
+- [x] add main menu
+- [ ] write classes for objects
+- [ ] add double jump
+- [ ] add collisions
+- [ ] add interface
 - [ ] add level redactor
 - [ ] implement saving progress using the database
 - [ ] add jokes and achievements
