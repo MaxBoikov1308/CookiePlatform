@@ -10,6 +10,11 @@ class Menue:
         self.font = pg.font.SysFont('Comic Sans MS', 80)
         self.text_logo = self.font.render('Cookie Platform', True, (0, 0, 0))
         self.button_sound = sound
+        self.start_button = self.font.render('start', True, (0, 0, 0))
+        self.level_button = self.font.render('levels', True, (0, 0, 0))
+        self.score_button = self.font.render('score', True, (0, 0, 0))
+        self.redactor_button = self.font.render('redactor', True, (0, 0, 0))
+        self.exit_button = self.font.render('exit', True, (0, 0, 0))
         self.start_coords = self.get_coords("start")
         self.start_coords_list = self.get_coords_list(self.start_coords)
         self.level_coords = self.get_coords("level")
@@ -28,11 +33,16 @@ class Menue:
         self.SCREEN.blit(self.logo, (800, 50))
         self.SCREEN.blit(self.text_logo, (680, 290))
         # (760, 290, 400, 70) здесь заменяем на blit и убираем текст (self.text_logo)
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.start_coords)  # здесь поменять на blit
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.level_coords)  # здесь поменять на blit
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.score_coords)  # здесь поменять на blit
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.redactor_coords)  # здесь поменять на blit
-        pg.draw.rect(self.SCREEN, (240, 0, 0), self.exit_coords)  # здесь поменять на blit
+        self.SCREEN.blit(self.start_button,
+                         (self.get_coords("start")[0] + 70, self.get_coords("start")[1] - 30))
+        self.SCREEN.blit(self.level_button,
+                         (self.get_coords("level")[0] + 60, self.get_coords("level")[1] - 30))
+        self.SCREEN.blit(self.score_button,
+                         (self.get_coords("score")[0] + 70, self.get_coords("score")[1] - 30))
+        self.SCREEN.blit(self.redactor_button,
+                         (self.get_coords("redactor")[0] + 10, self.get_coords("redactor")[1] - 30))
+        self.SCREEN.blit(self.exit_button,
+                         (self.get_coords("exit")[0] + 80, self.get_coords("exit")[1] - 30))
     
     def get_coords(self, name):
         if name == "start":
