@@ -18,8 +18,9 @@ class Game:
         self.BUTTON_SOUND = pg.mixer.Sound("../sounds/button_sound.mp3")
         self.BUTTON_SOUND.set_volume(VOLUME)
         self.bg = pg.image.load("../images/backgrounds/jungle_background.png")
+        self.pause_button = pg.transform.scale(pg.image.load("../images/buttons/exit.png"), (400, 110))
+        self.pause_rect = self.pause_button.get_rect(center=(960, 600))
         self.white = (255, 255, 255)
-        self.red = (255, 0, 0)
         self.black = (0, 0, 0)
         self.player = Player()
         self.builder = Builder(self.SCREEN)
@@ -28,6 +29,7 @@ class Game:
         self.player.y = 700
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
+        self.mousepos = None
     
     def run(self):
         while True:
@@ -53,8 +55,9 @@ class Game:
                             self.player.draw(self.SCREEN)
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
+                            self.mousepos = pg.Rect(e.pos[0], e.pos[1], 1, 1)
                             if self.IS_PAUSE:
-                                if self.menue.pause_coords_list.__contains__(e.pos):
+                                if pg.Rect.colliderect(self.pause_rect, self.mousepos):
                                     self.menue.ISGAME = False
                                     self.player.respawn(700, 700)
                                     self.IS_PAUSE = False
@@ -63,6 +66,9 @@ class Game:
 
                 if not self.IS_PAUSE:
                     self.player.move()
+                    if self.player.PHASE == 19:
+                        self.player.PHASE = 0
+                    self.player.PHASE += 1
 
                 # drawing the screen
                 self.SCREEN.fill(self.black)
@@ -72,11 +78,7 @@ class Game:
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
                     self.SCREEN.blit(text, (840, 400))
-                    pg.draw.rect(self.SCREEN, (240, 0, 0), (910, 550, 100, 100))
-                
-                if self.player.PHASE == 19:
-                    self.player.PHASE = 0
-                self.player.PHASE += 1
+                    self.SCREEN.blit(self.pause_button, self.pause_rect)
 
                 pg.display.flip()
                 self.FPS_CLOCK.tick(self.FPS)
@@ -91,19 +93,22 @@ class Game:
                             quit()
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
-                            if self.menue.start_coords_list.__contains__(e.pos):
-                                self.menue.ISGAME = True
+                            self.mousepos = pg.Rect(e.pos[0], e.pos[1], 1, 1)
+                            if pg.Rect.colliderect(self.menue.start_rect, self.mousepos):
                                 self.menue.button_sound.play()
+                                self.menue.ISGAME = True
                                 self.change_music(self.menue.ISGAME)
-                            if self.menue.exit_coords_list.__contains__(e.pos):
+                            if pg.Rect.colliderect(self.menue.exit_rect, self.mousepos):
                                 self.menue.button_sound.play()
                                 pg.quit()
                                 quit()
                             
                 self.SCREEN.fill(self.black)
                 self.menue.draw()
-                pg.display.flip()
-                self.FPS_CLOCK.tick(self.FPS)
+
+            pg.display.flip()
+            self.FPS_CLOCK.tick(self.FPS)
+            self.mousepos = None
 
     def change_music(self, isgame=False):
         if isgame:

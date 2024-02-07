@@ -70,10 +70,7 @@ class Player:
                 self.ISJUMP = False
                 self.Y_VELOCITY = self.JUMP_HEIGHT
 
-        # if self.ISJUMP:
         self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
-        # else:
-            # self.player_rect = self.STANDING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
         
         if self.X_POSITION > self.x_old:
             self.ISSTAND = False
@@ -101,6 +98,7 @@ class Player:
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT
         self.IS_SPRINT = False
+        self.ISSTAND = True
         self.PHASE = 0
         self.move()
     
