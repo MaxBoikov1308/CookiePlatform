@@ -21,21 +21,24 @@ class Player:
 
         self.ISRIGHT = True
 
-        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/walk_1_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/walk_1_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/jump_1_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/jump_1_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/run_1_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/run_1_l.png"), (60, 80))
-        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/walk_2_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/walk_2_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/jump_2_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/jump_2_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/run_2_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/run_2_l.png"), (60, 80))
+        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/walk_1_r.png"), (60, 80))
+        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/walk_1_l.png"), (60, 80))
+        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/jump_1_r.png"), (60, 80))
+        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/jump_1_l.png"), (60, 80))
+        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/run_1_r.png"), (60, 80))
+        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/run_1_l.png"), (60, 80))
+        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/walk_2_r.png"), (60, 80))
+        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/walk_2_l.png"), (60, 80))
+        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/jump_2_r.png"), (60, 80))
+        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/jump_2_l.png"), (60, 80))
+        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/run_2_r.png"), (60, 80))
+        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/run_2_l.png"), (60, 80))
     def move(self):
         keys = pg.key.get_pressed()
         self.x_old = self.X_POSITION
+        if self.ISSTANDING:
+                self.XR = 0
+                self.XL = 0
         if keys[pg.K_a] and self.X_POSITION > self.DELTA_X:
             self.IS_RIGHT_SPRINT = False
             self.XL += 1
@@ -81,6 +84,8 @@ class Player:
             self.ISRIGHT = True
         elif self.X_POSITION == self.x_old:
             self.ISSTANDING = True
+            self.IS_LEFT_SPRINT = False
+            self.IS_RIGHT_SPRINT = False
             if not self.ISRIGHT:
                 self.ISRIGHT = False
             else:

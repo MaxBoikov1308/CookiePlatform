@@ -5,7 +5,7 @@ class Menue:
     def __init__(self, screen, sound):
         self.ISGAME = False
         self.SCREEN = screen
-        self.bg = pg.image.load("../images/city_background.png")
+        self.bg = pg.image.load("../images/backgrounds/city_background.png")
         self.logo = pg.transform.scale(pg.image.load("../images/cookie.png"), (300, 300))
         self.font = pg.font.SysFont('Comic Sans MS', 80)
         self.text_logo = self.font.render('Cookie Platform', True, (0, 0, 0))
