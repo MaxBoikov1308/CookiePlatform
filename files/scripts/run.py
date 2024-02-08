@@ -80,8 +80,6 @@ class Game:
                     self.SCREEN.blit(text, (840, 400))
                     self.SCREEN.blit(self.pause_button, self.pause_rect)
 
-                pg.display.flip()
-                self.FPS_CLOCK.tick(self.FPS)
             else:
                 for e in pg.event.get():
                     if e.type == pg.QUIT:
