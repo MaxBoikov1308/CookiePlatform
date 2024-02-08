@@ -1,7 +1,7 @@
 import pygame as pg
 from peewee import SqliteDatabase, Model, TextField, IntegerField
 
-db = SqliteDatabase("../levels/level1.db")
+db = SqliteDatabase("files/levels/level1.db")
 
 class Level(Model):
     name = TextField()

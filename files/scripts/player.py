@@ -1,9 +1,9 @@
-from variables import *
+from files.scripts.variables import *
 import pygame as pg
 
 class Player:
     def __init__(self):
-        self.JUMP_SOUND = pg.mixer.Sound("../sounds/jump_sound.mp3")
+        self.JUMP_SOUND = pg.mixer.Sound("files/sounds/jump_sound.mp3")
         self.JUMP_SOUND.set_volume(VOLUME)
         self.X_POSITION, self.Y_POSITION = 400, 660
         
@@ -21,18 +21,18 @@ class Player:
 
         self.ISRIGHT = True
 
-        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/walk_1_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/walk_1_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/jump_1_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/jump_1_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("../images/player/run_1_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("../images/player/run_1_l.png"), (60, 80))
-        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/walk_2_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/walk_2_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/jump_2_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/jump_2_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("../images/player/run_2_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("../images/player/run_2_l.png"), (60, 80))
+        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/walk_1_r.png"), (60, 80))
+        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/walk_1_l.png"), (60, 80))
+        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/jump_1_r.png"), (60, 80))
+        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/jump_1_l.png"), (60, 80))
+        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/run_1_r.png"), (60, 80))
+        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/run_1_l.png"), (60, 80))
+        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_r.png"), (60, 80))
+        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_l.png"), (60, 80))
+        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_r.png"), (60, 80))
+        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_l.png"), (60, 80))
+        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_r.png"), (60, 80))
+        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_l.png"), (60, 80))
     def move(self):
         keys = pg.key.get_pressed()
         self.x_old = self.X_POSITION

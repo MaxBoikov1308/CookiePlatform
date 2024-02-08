@@ -1,4 +1,4 @@
-from variables import *
+from files.scripts.variables import *
 import sys
 import random
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsRectItem, QPushButton, QVBoxLayout, QWidget

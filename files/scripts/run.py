@@ -1,8 +1,8 @@
-from variables import *
+from files.scripts.variables import *
 import pygame as pg
-from builder import Builder
-from player import Player
-from main_menue import Menue
+from files.scripts.builder import Builder
+from files.scripts.player import Player
+from files.scripts.main_menue import Menue
 
 
 class Game:
@@ -15,10 +15,10 @@ class Game:
         pg.display.set_caption("Cookie Platform")
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = FPS
-        self.BUTTON_SOUND = pg.mixer.Sound("../sounds/button_sound.mp3")
+        self.BUTTON_SOUND = pg.mixer.Sound("files/sounds/button_sound.mp3")
         self.BUTTON_SOUND.set_volume(VOLUME)
-        self.bg = pg.image.load("../images/backgrounds/jungle_background.png")
-        self.pause_button = pg.transform.scale(pg.image.load("../images/buttons/exit.png"), (400, 110))
+        self.bg = pg.image.load("files/images/backgrounds/jungle_background.png")
+        self.pause_button = pg.transform.scale(pg.image.load("files/images/buttons/exit.png"), (400, 110))
         self.pause_rect = self.pause_button.get_rect(center=(960, 600))
         self.white = (255, 255, 255)
         self.black = (0, 0, 0)
@@ -112,8 +112,8 @@ class Game:
 
     def change_music(self, isgame=False):
         if isgame:
-            pg.mixer.music.load("../sounds/background1.mp3")
+            pg.mixer.music.load("files/sounds/background1.mp3")
         else:
-            pg.mixer.music.load("../sounds/menue_background.mp3")
+            pg.mixer.music.load("files/sounds/menue_background.mp3")
         pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
