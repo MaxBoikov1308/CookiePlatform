@@ -56,6 +56,7 @@ class Game:
                             self.mousepos = pg.Rect(e.pos[0], e.pos[1], 1, 1)
                             if self.IS_PAUSE:
                                 if pg.Rect.colliderect(self.pause_rect, self.mousepos):
+                                    self.BUTTON_SOUND.play()
                                     self.menue.ISGAME = False
                                     self.player.respawn()
                                     self.IS_PAUSE = False
@@ -63,6 +64,8 @@ class Game:
                                     self.player.XL = self.player.XR = 0
 
                 if not self.IS_PAUSE:
+                    self.update_distance()
+                    print(self.builder.objects[0].distance)
                     self.player.move()
                     if self.player.PHASE == 19:
                         self.player.PHASE = 0
@@ -113,3 +116,12 @@ class Game:
             pg.mixer.music.load("files/sounds/menue_background.mp3")
         pg.mixer.music.set_volume(VOLUME)
         pg.mixer.music.play(-1)
+    
+    def update_distance(self):
+        playerrect = self.player.player_rect
+        x1 = playerrect[0]
+        y1 = playerrect[1]
+        for obj in self.builder.objects:
+            x2 = obj.x
+            y2 = obj.y
+            obj.distance = int(((x2 - x1)**2 + (y2 - y1)**2)**0.5)

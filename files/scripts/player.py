@@ -23,18 +23,20 @@ class Player:
 
         self.ISRIGHT = True
 
-        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/walk_1_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/walk_1_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/jump_1_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/jump_1_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/run_1_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/run_1_l.png"), (60, 80))
-        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_r.png"), (60, 80))
-        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_l.png"), (60, 80))
-        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_r.png"), (60, 80))
-        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_l.png"), (60, 80))
-        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_r.png"), (60, 80))
-        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_l.png"), (60, 80))
+        self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/walk_1_r.png"), (PLAYER_W, PLAYER_H))
+        self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/walk_1_l.png"), (PLAYER_W, PLAYER_H))
+        self.JUMPING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/jump_1_r.png"), (PLAYER_W, PLAYER_H))
+        self.JUMPING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/jump_1_l.png"), (PLAYER_W, PLAYER_H))
+        self.RUNNING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/run_1_r.png"), (PLAYER_W, PLAYER_H))
+        self.RUNNING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/run_1_l.png"), (PLAYER_W, PLAYER_H))
+        self.STANDING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_r.png"), (PLAYER_W, PLAYER_H))
+        self.STANDING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/walk_2_l.png"), (PLAYER_W, PLAYER_H))
+        self.JUMPING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_r.png"), (PLAYER_W, PLAYER_H))
+        self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_l.png"), (PLAYER_W, PLAYER_H))
+        self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_r.png"), (PLAYER_W, PLAYER_H))
+        self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_l.png"), (PLAYER_W, PLAYER_H))
+
+        self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION + 30, self.Y_POSITION + 40))
 
     def move(self):
         keys = pg.key.get_pressed()
@@ -42,7 +44,7 @@ class Player:
         if self.ISSTAND:
                 self.XR = 0
                 self.XL = 0
-        if keys[pg.K_a] and self.X_POSITION > self.DELTA_X:
+        if keys[pg.K_a]:
             self.XL += 1
             self.XR = 0
             if self.XL >= 25:
@@ -51,7 +53,7 @@ class Player:
             else:
                 self.X_POSITION -= self.DELTA_X
 
-        if keys[pg.K_d] and self.X_POSITION < 1920 - self.DELTA_X - 50:
+        if keys[pg.K_d]:
             self.XR += 1
             self.XL = 0
             if self.XR >= 25:
@@ -88,12 +90,14 @@ class Player:
         else:
             self.ISSTAND = False
             self.ISRIGHT = False
+        
+        if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION < 0 or self.Y_POSITION > 1080 - PLAYER_H:
+            self.respawn()
 
 
     def draw(self, screen):
         screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
                                        self.JUMP_PHASE, self.ISSPRINT), self.player_rect)
-        # print(self.player_rect)
 
 
     def respawn(self):

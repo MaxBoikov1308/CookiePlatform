@@ -5,10 +5,20 @@ from files.scripts.variables import *
 class Object:
     def __init__(self, x, y, w, h, object_type):
         self.x, self.y, self.w, self.h, self.Object_type = x, y, w, h, object_type
+        self.distance = 1000000
         self.color = (255, 255, 255)
+        self.rect = pg.Rect(self.x, self.y, self.w, self.h)
+
+        self.ISACTIVE = False
 
     def draw(self, screen):
         pg.draw.rect(screen, self.color, (self.x, self.y, self.w, self.h))
+    
+    def set_active(self):
+        if self.distance < 2 * GRID_SIZE:
+            self.ISACTIVE = True
+        else:
+            self.ISACTIVE = False
 
 
 class Block(Object):
