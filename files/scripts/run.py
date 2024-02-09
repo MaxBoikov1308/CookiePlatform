@@ -16,17 +16,15 @@ class Game:
         self.FPS_CLOCK = pg.time.Clock()
         self.FPS = FPS
         self.BUTTON_SOUND = pg.mixer.Sound("files/sounds/button_sound.mp3")
-        self.BUTTON_SOUND.set_volume(VOLUME)
+        self.BUTTON_SOUND.set_volume(VOLUME * 10)
         self.bg = pg.image.load("files/images/backgrounds/jungle_background.png")
         self.pause_button = pg.transform.scale(pg.image.load("files/images/buttons/exit.png"), (400, 110))
         self.pause_rect = self.pause_button.get_rect(center=(960, 600))
-        self.white = (255, 255, 255)
-        self.black = (0, 0, 0)
-        self.player = Player()
+
         self.builder = Builder(self.SCREEN)
         self.menue = Menue(self.SCREEN, self.BUTTON_SOUND)
-        self.player.x = 700
-        self.player.y = 700
+        self.player = Player(self.builder.get_start_coords()[0], self.builder.get_start_coords()[1])
+
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
         self.mousepos = None
@@ -41,7 +39,7 @@ class Game:
                     if e.type == pg.KEYDOWN:
                         if e.key == pg.K_ESCAPE:
                             self.menue.ISGAME = False
-                            self.player.respawn(700, 700)
+                            self.player.respawn()
                             self.IS_PAUSE = False
                             self.change_music(self.menue.ISGAME)
                             self.player.XL = self.player.XR = 0
@@ -51,7 +49,7 @@ class Game:
                             else:
                                 self.IS_PAUSE = True
                         elif e.key == pg.K_r:
-                            self.player.respawn(700, 700)
+                            self.player.respawn()
                             self.player.draw(self.SCREEN)
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
@@ -59,7 +57,7 @@ class Game:
                             if self.IS_PAUSE:
                                 if pg.Rect.colliderect(self.pause_rect, self.mousepos):
                                     self.menue.ISGAME = False
-                                    self.player.respawn(700, 700)
+                                    self.player.respawn()
                                     self.IS_PAUSE = False
                                     self.change_music(self.menue.ISGAME)
                                     self.player.XL = self.player.XR = 0
@@ -71,9 +69,9 @@ class Game:
                     self.player.PHASE += 1
 
                 # drawing the screen
-                self.SCREEN.fill(self.black)
+                self.SCREEN.fill((0, 0, 0))
                 self.SCREEN.blit(self.bg, (0, 0))
-                self.builder.draw(self.white)
+                self.builder.draw()
                 self.player.draw(self.SCREEN)
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
@@ -101,7 +99,7 @@ class Game:
                                 pg.quit()
                                 quit()
                             
-                self.SCREEN.fill(self.black)
+                self.SCREEN.fill((0, 0, 0))
                 self.menue.draw()
 
             pg.display.flip()

@@ -2,10 +2,12 @@ from files.scripts.variables import *
 import pygame as pg
 
 class Player:
-    def __init__(self):
+    def __init__(self, x0, y0):
         self.JUMP_SOUND = pg.mixer.Sound("files/sounds/jump_sound.mp3")
         self.JUMP_SOUND.set_volume(VOLUME)
-        self.X_POSITION, self.Y_POSITION = 400, 660
+        self.X0 = x0
+        self.Y0 = y0
+        self.X_POSITION, self.Y_POSITION = self.X0, self.Y0
         
         self.DELTA_X = SPEED
         self.XR, self.XL = 0, 0
@@ -33,6 +35,7 @@ class Player:
         self.JUMPING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/jump_2_l.png"), (60, 80))
         self.RUNNING_SURFACE_RIGHT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_r.png"), (60, 80))
         self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_l.png"), (60, 80))
+
     def move(self):
         keys = pg.key.get_pressed()
         self.x_old = self.X_POSITION
@@ -70,7 +73,7 @@ class Player:
                 self.ISJUMP = False
                 self.Y_VELOCITY = self.JUMP_HEIGHT
 
-        self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION, self.Y_POSITION))
+        self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION + 30, self.Y_POSITION + 40))
         
         if self.X_POSITION > self.x_old:
             self.ISSTAND = False
@@ -90,10 +93,11 @@ class Player:
     def draw(self, screen):
         screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
                                        self.JUMP_PHASE, self.ISSPRINT), self.player_rect)
+        # print(self.player_rect)
 
 
-    def respawn(self, x0, y0):
-        self.X_POSITION, self.Y_POSITION = x0, y0
+    def respawn(self):
+        self.X_POSITION, self.Y_POSITION = self.X0, self.Y0
         self.ISFALL = False
         self.ISJUMP = False
         self.Y_VELOCITY = self.JUMP_HEIGHT

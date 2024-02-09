@@ -1,11 +1,10 @@
-import pygame as pg
 from peewee import *
 
 db = SqliteDatabase("../levels/level2.db")
 
 
 class Level(Model):
-    name = TextField()
+    Object_type = TextField()
     x = IntegerField()
     y = IntegerField()
     h = IntegerField()
