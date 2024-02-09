@@ -45,4 +45,4 @@ class Builder:
     def get_start_coords(self):
         for obj in self.objects:
             if obj.Object_type == "start":
-                return obj.x + 5, obj.y - 30
+                return obj.x + 5, obj.y - 25

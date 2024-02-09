@@ -18,11 +18,11 @@ class Player:
         self.ISSTAND = True
         self.ISJUMP = False
         self.ISRIGHT = True
-        self.ISFALL = True
+        self.ISFALL = False
         self.ISSPRINT = False
         self.Y_GRAVITY = 1
         self.JUMP_HEIGHT = 15 
-        self.Y_VELOCITY = self.JUMP_HEIGHT
+        self.Y_VELOCITY = 0
 
         self.RIGHT_COLLISION = False
         self.LEFT_COLLISION = False
@@ -46,7 +46,15 @@ class Player:
 
     def move(self):
         keys = pg.key.get_pressed()
+
         self.x_old = self.X_POSITION
+        if self.BOTTOM_COLLISION:
+            self.Y_VELOCITY = 0
+            self.ISFALL = False
+            self.JUMP_COUNT = 0
+        elif not self.BOTTOM_COLLISION:
+            self.ISFALL = True
+        
         if self.ISSTAND:
                 self.XR = 0
                 self.XL = 0
@@ -77,11 +85,10 @@ class Player:
                 self.JUMP_SOUND.play()
         if self.ISJUMP:
             self.JUMP_PHASE += 1
-            print(self.JUMP_PHASE)
             self.Y_POSITION -= self.Y_VELOCITY
             self.Y_VELOCITY -= self.Y_GRAVITY
             if self.Y_VELOCITY < 0:
-                self.JUMP_PHASE == 0
+                self.JUMP_PHASE = 0
                 self.ISJUMP = False
                 self.ISFALL = True
         elif self.ISFALL:
@@ -106,11 +113,8 @@ class Player:
         
         if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION < 0 or self.Y_POSITION > 1080 - PLAYER_H:
             self.respawn()
-        
-        if self.BOTTOM_COLLISION:
-            self.JUMP_COUNT = 0
-            self.Y_VELOCITY = self.JUMP_HEIGHT
 
+        self.BOTTOM_COLLISION = False
 
     def draw(self, screen):
         screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
@@ -121,7 +125,7 @@ class Player:
         self.X_POSITION, self.Y_POSITION = self.X0, self.Y0
         self.ISFALL = False
         self.ISJUMP = False
-        self.Y_VELOCITY = self.JUMP_HEIGHT
+        self.Y_VELOCITY = 0
         self.IS_SPRINT = False
         self.ISSTAND = True
         self.PHASE = 0
@@ -131,6 +135,7 @@ class Player:
         self.BOTTOM_COLLISION = False
         self.TOP_COLLISION = False
         self.ISFALL = False
+        self.JUMP_PHASE = 0
         self.move()
     
     def select_sprite(self, phase=0, isright=True, isstand=True, isjump=False, jumpphase=0, issprint=False):

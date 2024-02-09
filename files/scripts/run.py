@@ -136,6 +136,8 @@ class Game:
                     elif i.Object_type == "enemy":
                         self.player.respawn()
                     elif i.Object_type == "block":
-                        if self.player.ISFALL:
-                            self.player.ISFALL = False
-                            self.player.Y_POSITION = i.y - PLAYER_H
+                        if self.player.Y_POSITION + PLAYER_H + 1 > i.y:
+                            self.player.BOTTOM_COLLISION = True
+                            self.player.Y_POSITION = i.y - PLAYER_H + 1
+                        else:
+                            self.player.BOTTOM_COLLISION = False
