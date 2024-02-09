@@ -19,6 +19,9 @@ class Object:
             self.ISACTIVE = True
         else:
             self.ISACTIVE = False
+    
+    def action(self):
+        pass
 
 
 class Block(Object):

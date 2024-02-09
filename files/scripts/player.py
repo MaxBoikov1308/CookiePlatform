@@ -12,16 +12,18 @@ class Player:
         self.DELTA_X = SPEED
         self.XR, self.XL = 0, 0
 
-        self.ISJUMP = False
         self.JUMP_PHASE = 0
-        self.ISSPRINT = False
         self.PHASE = 0
         self.ISSTAND = True
+        self.ISJUMP = False
+        self.ISRIGHT = True
+        self.ISFALL = False
+        self.ISSPRINT = False
         self.Y_GRAVITY = 1
         self.JUMP_HEIGHT = 15 
         self.Y_VELOCITY = self.JUMP_HEIGHT
 
-        self.ISRIGHT = True
+
 
         self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/walk_1_r.png"), (PLAYER_W, PLAYER_H))
         self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/walk_1_l.png"), (PLAYER_W, PLAYER_H))
@@ -149,3 +151,9 @@ class Player:
                 else:
                     return self.RUNNING_SURFACE_LEFT_1
         
+    def check_collision(self, obj):
+        objrect = obj.rect
+        if self.player_rect.colliderect(objrect):
+            return True
+        else:
+            return False

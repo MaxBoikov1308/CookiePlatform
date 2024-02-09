@@ -38,11 +38,10 @@ class Game:
                         quit()
                     if e.type == pg.KEYDOWN:
                         if e.key == pg.K_ESCAPE:
-                            self.menue.ISGAME = False
-                            self.player.respawn()
-                            self.IS_PAUSE = False
-                            self.change_music(self.menue.ISGAME)
-                            self.player.XL = self.player.XR = 0
+                            if self.IS_PAUSE:
+                                self.IS_PAUSE = False
+                            else:
+                                self.IS_PAUSE = True
                         elif e.key == pg.K_p:
                             if self.IS_PAUSE:
                                 self.IS_PAUSE = False
@@ -57,25 +56,20 @@ class Game:
                             if self.IS_PAUSE:
                                 if pg.Rect.colliderect(self.pause_rect, self.mousepos):
                                     self.BUTTON_SOUND.play()
-                                    self.menue.ISGAME = False
-                                    self.player.respawn()
-                                    self.IS_PAUSE = False
-                                    self.change_music(self.menue.ISGAME)
-                                    self.player.XL = self.player.XR = 0
+                                    self.change_to_menu()
 
                 if not self.IS_PAUSE:
                     self.update_distance()
-                    print(self.builder.objects[0].distance)
                     self.player.move()
                     if self.player.PHASE == 19:
                         self.player.PHASE = 0
                     self.player.PHASE += 1
 
-                # drawing the screen
                 self.SCREEN.fill((0, 0, 0))
                 self.SCREEN.blit(self.bg, (0, 0))
                 self.builder.draw()
                 self.player.draw(self.SCREEN)
+                self.check_collision()
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
                     self.SCREEN.blit(text, (840, 400))
@@ -125,3 +119,17 @@ class Game:
             x2 = obj.x
             y2 = obj.y
             obj.distance = int(((x2 - x1)**2 + (y2 - y1)**2)**0.5)
+            obj.set_active()
+    
+    def change_to_menu(self):
+        self.menue.ISGAME = False
+        self.player.respawn()
+        self.IS_PAUSE = False
+        self.change_music(self.menue.ISGAME)
+
+    def check_collision(self):
+        for i in self.builder.objects:
+            if i.ISACTIVE:
+                if self.player.check_collision(i):
+                    if i.Object_type == "finish":
+                        self.change_to_menu()
