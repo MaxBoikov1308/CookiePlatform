@@ -20,9 +20,6 @@ class Object:
             self.ISACTIVE = True
         else:
             self.ISACTIVE = False
-    
-    def action(self):
-        pass
 
 
 class Block(Object):
@@ -57,11 +54,11 @@ class Finish(Object):
     def __init__(self, x, y, w, h, object_type):
         super().__init__(x, y, w, h, object_type)
         self.color = (0, 0, 0)
-        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/cookie.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/finish.png"), (GRID_SIZE, GRID_SIZE))
 
 
 class Start(Object):
     def __init__(self, x, y, w, h, object_type):
         super().__init__(x, y, w, h, object_type)
         self.color = (255, 255, 255)
-        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/cookie.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/start.png"), (GRID_SIZE, GRID_SIZE))

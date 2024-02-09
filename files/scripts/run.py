@@ -133,3 +133,9 @@ class Game:
                 if self.player.check_collision(i):
                     if i.Object_type == "finish":
                         self.change_to_menu()
+                    elif i.Object_type == "enemy":
+                        self.player.respawn()
+                    elif i.Object_type == "block":
+                        if self.player.ISFALL:
+                            self.player.ISFALL = False
+                            self.player.Y_POSITION = i.y - PLAYER_H

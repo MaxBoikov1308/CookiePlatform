@@ -13,17 +13,21 @@ class Player:
         self.XR, self.XL = 0, 0
 
         self.JUMP_PHASE = 0
+        self.JUMP_COUNT = 0
         self.PHASE = 0
         self.ISSTAND = True
         self.ISJUMP = False
         self.ISRIGHT = True
-        self.ISFALL = False
+        self.ISFALL = True
         self.ISSPRINT = False
         self.Y_GRAVITY = 1
         self.JUMP_HEIGHT = 15 
         self.Y_VELOCITY = self.JUMP_HEIGHT
 
-
+        self.RIGHT_COLLISION = False
+        self.LEFT_COLLISION = False
+        self.BOTTOM_COLLISION = False
+        self.TOP_COLLISION = False
 
         self.STANDING_SURFACE_RIGHT = pg.transform.scale(pg.image.load("files/images/player/walk_1_r.png"), (PLAYER_W, PLAYER_H))
         self.STANDING_SURFACE_LEFT = pg.transform.scale(pg.image.load("files/images/player/walk_1_l.png"), (PLAYER_W, PLAYER_H))
@@ -46,7 +50,7 @@ class Player:
         if self.ISSTAND:
                 self.XR = 0
                 self.XL = 0
-        if keys[pg.K_a]:
+        if keys[pg.K_a] and self.LEFT_COLLISION == False:
             self.XL += 1
             self.XR = 0
             if self.XL >= 25:
@@ -55,7 +59,7 @@ class Player:
             else:
                 self.X_POSITION -= self.DELTA_X
 
-        if keys[pg.K_d]:
+        if keys[pg.K_d] and self.RIGHT_COLLISION == False:
             self.XR += 1
             self.XL = 0
             if self.XR >= 25:
@@ -64,18 +68,25 @@ class Player:
             else:
                 self.X_POSITION += self.DELTA_X
             
-        if not(self.ISJUMP):
+        if not(self.ISJUMP) and self.JUMP_COUNT < 2:
             if keys[pg.K_SPACE] or keys[pg.K_w]:
+                self.ISFALL = False
+                self.Y_VELOCITY = self.JUMP_HEIGHT
+                self.JUMP_COUNT += 1
                 self.ISJUMP = True
                 self.JUMP_SOUND.play()
         if self.ISJUMP:
             self.JUMP_PHASE += 1
+            print(self.JUMP_PHASE)
             self.Y_POSITION -= self.Y_VELOCITY
             self.Y_VELOCITY -= self.Y_GRAVITY
-            if self.Y_VELOCITY < -self.JUMP_HEIGHT:
+            if self.Y_VELOCITY < 0:
                 self.JUMP_PHASE == 0
                 self.ISJUMP = False
-                self.Y_VELOCITY = self.JUMP_HEIGHT
+                self.ISFALL = True
+        elif self.ISFALL:
+            self.Y_POSITION -= self.Y_VELOCITY
+            self.Y_VELOCITY -= self.Y_GRAVITY
 
         self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION + 30, self.Y_POSITION + 40))
         
@@ -95,6 +106,10 @@ class Player:
         
         if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION < 0 or self.Y_POSITION > 1080 - PLAYER_H:
             self.respawn()
+        
+        if self.BOTTOM_COLLISION:
+            self.JUMP_COUNT = 0
+            self.Y_VELOCITY = self.JUMP_HEIGHT
 
 
     def draw(self, screen):
@@ -110,6 +125,12 @@ class Player:
         self.IS_SPRINT = False
         self.ISSTAND = True
         self.PHASE = 0
+        self.JUMP_COUNT = 0
+        self.RIGHT_COLLISION = False
+        self.LEFT_COLLISION = False
+        self.BOTTOM_COLLISION = False
+        self.TOP_COLLISION = False
+        self.ISFALL = False
         self.move()
     
     def select_sprite(self, phase=0, isright=True, isstand=True, isjump=False, jumpphase=0, issprint=False):
