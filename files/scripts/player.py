@@ -118,7 +118,7 @@ class Player:
 
     def draw(self, screen):
         screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
-                                       self.JUMP_PHASE, self.ISSPRINT), self.player_rect)
+                                       self.JUMP_PHASE, self.ISSPRINT, self.ISFALL), self.player_rect)
 
 
     def respawn(self):
@@ -138,8 +138,11 @@ class Player:
         self.JUMP_PHASE = 0
         self.move()
     
-    def select_sprite(self, phase=0, isright=True, isstand=True, isjump=False, jumpphase=0, issprint=False):
+    def select_sprite(self, phase=0, isright=True, isstand=True, isjump=False, jumpphase=0, issprint=False, isfall=False):
         if isright:
+            if isfall and not isjump:
+                return self.JUMPING_SURFACE_RIGHT_1
+
             if phase < 10:
                 if isjump:
                     if jumpphase <= 15:
@@ -159,12 +162,16 @@ class Player:
                 else:
                     return self.RUNNING_SURFACE_RIGHT_1
         else:
+            if isfall and not isjump:
+                return self.JUMPING_SURFACE_LEFT_1
+
             if phase < 10:
                 if isjump:
                     if jumpphase <= 15:
                         return self.JUMPING_SURFACE_LEFT
                     else:
                         return self.JUMPING_SURFACE_LEFT_1
+
                 if not issprint or isstand:
                     return self.STANDING_SURFACE_LEFT
                 else:
