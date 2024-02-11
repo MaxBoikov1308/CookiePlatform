@@ -58,23 +58,26 @@ class Player:
         if self.ISSTAND:
                 self.XR = 0
                 self.XL = 0
-        if keys[pg.K_a] and self.LEFT_COLLISION == False:
-            self.XL += 1
-            self.XR = 0
-            if self.XL >= 25:
-                self.ISSPRINT = True
-                self.X_POSITION -= 2 * self.DELTA_X
-            else:
-                self.X_POSITION -= self.DELTA_X
 
-        if keys[pg.K_d] and self.RIGHT_COLLISION == False:
-            self.XR += 1
-            self.XL = 0
-            if self.XR >= 25:
-                self.ISSPRINT = True
-                self.X_POSITION += 2 * self.DELTA_X
-            else:
-                self.X_POSITION += self.DELTA_X
+        if not self.LEFT_COLLISION:
+            if keys[pg.K_a]:
+                self.XL += 1
+                self.XR = 0
+                if self.XL >= 25:
+                    self.ISSPRINT = True
+                    self.X_POSITION -= 2 * self.DELTA_X
+                else:
+                    self.X_POSITION -= self.DELTA_X
+
+        if not self.RIGHT_COLLISION:
+            if keys[pg.K_d]:
+                self.XR += 1
+                self.XL = 0
+                if self.XR >= 25:
+                    self.ISSPRINT = True
+                    self.X_POSITION += 2 * self.DELTA_X
+                else:
+                    self.X_POSITION += self.DELTA_X
             
         if not(self.ISJUMP) and self.JUMP_COUNT < 2:
             if keys[pg.K_SPACE] or keys[pg.K_w]:
@@ -115,6 +118,9 @@ class Player:
             self.respawn()
 
         self.BOTTOM_COLLISION = False
+        self.LEFT_COLLISION = False
+        self.RIGHT_COLLISION = False
+        self.TOP_COLLISION = False
 
     def draw(self, screen):
         screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
@@ -185,8 +191,6 @@ class Player:
                     return self.RUNNING_SURFACE_LEFT_1
         
     def check_collision(self, obj):
-        objrect = obj.rect
-        if self.player_rect.colliderect(objrect):
+        if pg.Rect.colliderect(pg.Rect(self.X_POSITION - 1, self.Y_POSITION, PLAYER_W + 1, PLAYER_H), obj.rect):
             return True
-        else:
-            return False
+        return False

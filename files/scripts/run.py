@@ -60,6 +60,7 @@ class Game:
 
                 if not self.IS_PAUSE:
                     self.update_distance()
+                    self.check_collision()
                     self.player.move()
                     if self.player.PHASE == 19:
                         self.player.PHASE = 0
@@ -69,7 +70,6 @@ class Game:
                 self.SCREEN.blit(self.bg, (0, 0))
                 self.builder.draw()
                 self.player.draw(self.SCREEN)
-                self.check_collision()
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
                     self.SCREEN.blit(text, (840, 400))
@@ -131,13 +131,46 @@ class Game:
         for i in self.builder.objects:
             if i.ISACTIVE:
                 if self.player.check_collision(i):
+                    i.ISCOLLIDE = True
                     if i.Object_type == "finish":
                         self.change_to_menu()
                     elif i.Object_type == "enemy":
                         self.player.respawn()
+                    elif i.Object_type == "cookie":
+                        pass
+                    elif i.Object_type == "spike":
+                        self.player.respawn()
                     elif i.Object_type == "block":
-                        if self.player.Y_POSITION + PLAYER_H + 1 > i.y:
-                            self.player.BOTTOM_COLLISION = True
-                            self.player.Y_POSITION = i.y - PLAYER_H + 1
+                        if not self.player.ISJUMP:
+                            if self.player.Y_POSITION + PLAYER_H + 1 > i.y and i.y + i.h > self.player.Y_POSITION + PLAYER_H:
+                                self.player.BOTTOM_COLLISION = True
+                                self.player.Y_POSITION = i.y - PLAYER_H + 1
+                                continue
+
+                            if i.x + i.w >= self.player.X_POSITION and i.x < self.player.X_POSITION:
+                                self.player.LEFT_COLLISION = True
+                                self.player.X_POSITION = i.x + GRID_SIZE
+                                continue
+
+                            if self.player.X_POSITION + PLAYER_W >= i.x and i.x + i.w > self.player.X_POSITION + PLAYER_W:
+                                self.player.RIGHT_COLLISION = True
+                                self.player.X_POSITION = i.x - PLAYER_W + 1
+                                continue
                         else:
-                            self.player.BOTTOM_COLLISION = False
+                            if i.x + i.w >= self.player.X_POSITION and i.x < self.player.X_POSITION:
+                                self.player.LEFT_COLLISION = True
+                                self.player.X_POSITION = i.x + GRID_SIZE
+                                continue
+
+                            if self.player.X_POSITION + PLAYER_W >= i.x and i.x + i.w > self.player.X_POSITION + PLAYER_W:
+                                self.player.RIGHT_COLLISION = True
+                                self.player.X_POSITION = i.x - PLAYER_W + 1
+                                continue
+
+                            if self.player.Y_POSITION + PLAYER_H + 1 > i.y and i.y + i.h > self.player.Y_POSITION + PLAYER_H:
+                                self.player.BOTTOM_COLLISION = True
+                                self.player.Y_POSITION = i.y - PLAYER_H + 1
+                                continue
+
+                else:
+                    i.ISCOLLIDE = False

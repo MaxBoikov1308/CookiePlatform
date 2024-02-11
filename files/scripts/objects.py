@@ -9,17 +9,23 @@ class Object:
         self.color = (255, 255, 255)
         self.rect = pg.Rect(self.x, self.y, self.w, self.h)
         self.sprite = None
+        self.ISCOLLIDE = False
 
         self.ISACTIVE = False
 
     def draw(self, screen):
+        # make active next comment to show blocks with collision
+        # if self.ISCOLLIDE:
+            # pg.draw.rect(screen, self.color, self.rect)
+            # return
         screen.blit(self.sprite, (self.x, self.y))
     
     def set_active(self):
-        if self.distance < 2 * GRID_SIZE:
+        if self.distance < 3 * GRID_SIZE:
             self.ISACTIVE = True
         else:
             self.ISACTIVE = False
+            self.ISCOLLIDE = False
 
 
 class Block(Object):
