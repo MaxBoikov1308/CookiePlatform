@@ -191,6 +191,13 @@ class Player:
                     return self.RUNNING_SURFACE_LEFT_1
         
     def check_collision(self, obj):
-        if pg.Rect.colliderect(pg.Rect(self.X_POSITION - 1, self.Y_POSITION, PLAYER_W + 1, PLAYER_H), obj.rect):
-            return True
+        if self.ISFALL:
+            if pg.Rect.colliderect(pg.Rect(self.X_POSITION + 10, self.Y_POSITION, PLAYER_W - 20, PLAYER_H), obj.rect):
+                return True
+        elif self.ISJUMP:
+            if pg.Rect.colliderect(pg.Rect(self.X_POSITION + 10, self.Y_POSITION, PLAYER_W - 20, PLAYER_H), obj.rect):
+                return True
+        else:
+            if pg.Rect.colliderect(pg.Rect(self.X_POSITION - 1, self.Y_POSITION, PLAYER_W + 1, PLAYER_H), obj.rect):
+                return True
         return False
