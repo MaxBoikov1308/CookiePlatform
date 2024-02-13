@@ -5,9 +5,9 @@
 - [x] add good handling
 - [x] add pause
 - [x] add main menu
-- [ ] write classes for objects
-- [ ] add double jump
-- [ ] add collisions
+- [x] write classes for objects
+- [x] add double jump
+- [x] add collisions
 - [ ] add interface
 - [ ] add level redactor
 - [ ] implement saving progress using the database
