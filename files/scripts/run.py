@@ -122,6 +122,8 @@ class Game:
         x1 = playerrect[0]
         y1 = playerrect[1]
         for obj in self.builder.objects:
+            if obj.Object_type == "enemy":
+                obj.PHASE = self.player.PHASE
             x2 = obj.x
             y2 = obj.y
             obj.distance = int(((x2 - x1)**2 + (y2 - y1)**2)**0.5)
@@ -151,7 +153,6 @@ class Game:
                     elif i.Object_type == "cookie":
                         if self.player.hp != 3:
                             self.player.hp += 1
-                            self.player.respawn()
                             self.builder.objects.remove(i)
                     elif i.Object_type == "block":
                         if not self.player.ISJUMP:
