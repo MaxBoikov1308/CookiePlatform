@@ -8,7 +8,7 @@
 - [x] write classes for objects
 - [x] add double jump
 - [x] add collisions
-- [ ] add interface
+- [x] add interface
 - [ ] add level redactor
 - [ ] implement saving progress using the database
 - [ ] add jokes and achievements

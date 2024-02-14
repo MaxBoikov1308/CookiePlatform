@@ -3,6 +3,7 @@ import pygame as pg
 from files.scripts.builder import Builder
 from files.scripts.player import Player
 from files.scripts.main_menue import Menue
+from files.scripts.interface import Interface
 
 
 class Game:
@@ -23,7 +24,8 @@ class Game:
 
         self.builder = Builder(self.SCREEN)
         self.menue = Menue(self.SCREEN, self.BUTTON_SOUND)
-        self.player = Player(self.builder.get_start_coords()[0], self.builder.get_start_coords()[1])
+        self.player = Player(self.builder.get_start_coords()[0], self.builder.get_start_coords()[1], self.SCREEN)
+        self.interface = Interface(self.SCREEN)
 
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
@@ -49,7 +51,7 @@ class Game:
                                 self.IS_PAUSE = True
                         elif e.key == pg.K_r:
                             self.player.respawn()
-                            self.player.draw(self.SCREEN)
+                            self.player.draw()
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
                             self.mousepos = pg.Rect(e.pos[0], e.pos[1], 1, 1)
@@ -69,7 +71,9 @@ class Game:
                 self.SCREEN.fill((0, 0, 0))
                 self.SCREEN.blit(self.bg, (0, 0))
                 self.builder.draw()
-                self.player.draw(self.SCREEN)
+                self.player.draw()
+                self.interface.draw(self.player.hp)
+
                 if self.IS_PAUSE:
                     text = self.font.render('PAUSE', False, (0, 0, 0))
                     self.SCREEN.blit(text, (840, 400))
@@ -136,8 +140,10 @@ class Game:
                         self.change_to_menu()
                     elif i.Object_type == "enemy":
                         self.player.respawn()
+                        self.player.hp -= 1
                     elif i.Object_type == "spike":
                         self.player.respawn()
+                        self.player.hp -= 1
                     elif i.Object_type == "cookie":
                         self.player.hp += 1
                         self.player.respawn()

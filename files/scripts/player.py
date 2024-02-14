@@ -2,12 +2,13 @@ from files.scripts.variables import *
 import pygame as pg
 
 class Player:
-    def __init__(self, x0, y0):
+    def __init__(self, x0, y0, screen):
         self.JUMP_SOUND = pg.mixer.Sound("files/sounds/jump_sound.mp3")
         self.JUMP_SOUND.set_volume(VOLUME)
         self.X0 = x0
         self.Y0 = y0
         self.X_POSITION, self.Y_POSITION = self.X0, self.Y0
+        self.screen = screen
         
         self.DELTA_X = SPEED
         self.XR, self.XL = 0, 0
@@ -123,8 +124,8 @@ class Player:
         self.RIGHT_COLLISION = False
         self.TOP_COLLISION = False
 
-    def draw(self, screen):
-        screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
+    def draw(self):
+        self.screen.blit(self.select_sprite(self.PHASE, self.ISRIGHT, self.ISSTAND, self.ISJUMP,
                                        self.JUMP_PHASE, self.ISSPRINT, self.ISFALL), self.player_rect)
 
 
