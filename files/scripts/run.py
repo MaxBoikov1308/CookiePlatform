@@ -136,10 +136,12 @@ class Game:
                         self.change_to_menu()
                     elif i.Object_type == "enemy":
                         self.player.respawn()
-                    elif i.Object_type == "cookie":
-                        pass
                     elif i.Object_type == "spike":
                         self.player.respawn()
+                    elif i.Object_type == "cookie":
+                        self.player.hp += 1
+                        self.player.respawn()
+                        self.builder.objects.remove(i)
                     elif i.Object_type == "block":
                         if not self.player.ISJUMP:
                             if self.player.Y_POSITION + PLAYER_H + 1 > i.y and i.y + i.h > self.player.Y_POSITION + PLAYER_H:
@@ -172,5 +174,10 @@ class Game:
                                 self.player.Y_POSITION = i.y - PLAYER_H + 1
                                 continue
 
+                            if self.player.Y_POSITION - self.player.Y_VELOCITY <= i.y + GRID_SIZE and i.y + GRID_SIZE > self.player.Y_POSITION - PLAYER_H:
+                                self.player.TOP_COLLISION = True
+                                self.player.Y_VELOCITY = 0
+                                self.player.Y_POSITION = i.y + GRID_SIZE + 1
+                                continue
                 else:
                     i.ISCOLLIDE = False

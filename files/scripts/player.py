@@ -43,6 +43,7 @@ class Player:
         self.RUNNING_SURFACE_LEFT_1 = pg.transform.scale(pg.image.load("files/images/player/run_2_l.png"), (PLAYER_W, PLAYER_H))
 
         self.player_rect = self.JUMPING_SURFACE_RIGHT.get_rect(center=(self.X_POSITION + 30, self.Y_POSITION + 40))
+        self.hp = 3
 
     def move(self):
         keys = pg.key.get_pressed()
