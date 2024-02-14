@@ -133,6 +133,7 @@ class Game:
         self.player.hp = 3
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
+        self.builder.objects = self.builder.load_objects_from_db()
 
     def check_collision(self):
         for i in self.builder.objects:
