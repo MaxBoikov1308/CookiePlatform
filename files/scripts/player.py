@@ -118,6 +118,7 @@ class Player:
         
         if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION < 0 or self.Y_POSITION > 1080 - PLAYER_H:
             self.respawn()
+            self.hp -= 1
 
         self.BOTTOM_COLLISION = False
         self.LEFT_COLLISION = False

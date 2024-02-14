@@ -64,6 +64,8 @@ class Game:
                     self.update_distance()
                     self.check_collision()
                     self.player.move()
+                    if self.player.hp < 1:
+                        self.change_to_menu()
                     if self.player.PHASE == 19:
                         self.player.PHASE = 0
                     self.player.PHASE += 1
@@ -128,6 +130,7 @@ class Game:
     def change_to_menu(self):
         self.menue.ISGAME = False
         self.player.respawn()
+        self.player.hp = 3
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
 
@@ -145,9 +148,10 @@ class Game:
                         self.player.respawn()
                         self.player.hp -= 1
                     elif i.Object_type == "cookie":
-                        self.player.hp += 1
-                        self.player.respawn()
-                        self.builder.objects.remove(i)
+                        if self.player.hp != 3:
+                            self.player.hp += 1
+                            self.player.respawn()
+                            self.builder.objects.remove(i)
                     elif i.Object_type == "block":
                         if not self.player.ISJUMP:
                             if self.player.Y_POSITION + PLAYER_H + 1 > i.y and i.y + i.h > self.player.Y_POSITION + PLAYER_H:
