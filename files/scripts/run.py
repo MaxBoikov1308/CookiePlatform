@@ -4,6 +4,7 @@ from files.scripts.builder import Builder
 from files.scripts.player import Player
 from files.scripts.main_menue import Menue
 from files.scripts.interface import Interface
+from random import randint
 
 
 class Game:
@@ -18,7 +19,6 @@ class Game:
         self.FPS = FPS
         self.BUTTON_SOUND = pg.mixer.Sound("files/sounds/button_sound.mp3")
         self.BUTTON_SOUND.set_volume(VOLUME * 10)
-        self.bg = pg.image.load("files/images/backgrounds/jungle_background.png")
         self.pause_button = pg.transform.scale(pg.image.load("files/images/buttons/exit.png"), (400, 110))
         self.pause_rect = self.pause_button.get_rect(center=(960, 600))
 
@@ -26,6 +26,7 @@ class Game:
         self.menue = Menue(self.SCREEN, self.BUTTON_SOUND)
         self.player = Player(self.builder.get_start_coords()[0], self.builder.get_start_coords()[1], self.SCREEN)
         self.interface = Interface(self.SCREEN)
+        self.bg = self.builder.choose_bg(randint(1, 4))
 
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
@@ -96,6 +97,7 @@ class Game:
                             if pg.Rect.colliderect(self.menue.start_rect, self.mousepos):
                                 self.menue.button_sound.play()
                                 self.menue.ISGAME = True
+                                self.bg = self.builder.choose_bg(randint(1, 4))
                                 self.change_music(self.menue.ISGAME)
                             if pg.Rect.colliderect(self.menue.exit_rect, self.mousepos):
                                 self.menue.button_sound.play()
@@ -122,18 +124,28 @@ class Game:
         x1 = playerrect[0]
         y1 = playerrect[1]
         for obj in self.builder.objects:
+            if obj.Object_type == "enemy":
+                obj.PHASE = self.player.PHASE
             x2 = obj.x
             y2 = obj.y
             obj.distance = int(((x2 - x1)**2 + (y2 - y1)**2)**0.5)
             obj.set_active()
     
     def change_to_menu(self):
-        self.menue.ISGAME = False
-        self.player.respawn()
-        self.player.hp = 3
-        self.IS_PAUSE = False
-        self.change_music(self.menue.ISGAME)
-        self.builder.objects = self.builder.load_objects_from_db()
+        if self.builder.level_number == 1 and not self.IS_PAUSE:
+            self.builder.level_number = 2
+            self.builder.objects = self.builder.load_objects_from_db()
+            self.player.X0, self.player.Y0 = self.builder.get_start_coords()[0], self.builder.get_start_coords()[1]
+            self.bg = self.builder.choose_bg(randint(1, 4))
+            self.player.respawn()
+        else:
+            self.menue.ISGAME = False
+            self.player.respawn()
+            self.player.hp = 3
+            self.IS_PAUSE = False
+            self.change_music(self.menue.ISGAME)
+            self.builder.objects = self.builder.load_objects_from_db()
+            self.builder.level_number = 1
 
     def check_collision(self):
         for i in self.builder.objects:
@@ -151,7 +163,6 @@ class Game:
                     elif i.Object_type == "cookie":
                         if self.player.hp != 3:
                             self.player.hp += 1
-                            self.player.respawn()
                             self.builder.objects.remove(i)
                     elif i.Object_type == "block":
                         if not self.player.ISJUMP:

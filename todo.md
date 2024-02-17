@@ -12,4 +12,4 @@
 - [ ] add level redactor
 - [ ] implement saving progress using the database
 - [ ] add jokes and achievements
-- [ ] well done
+- [x] well done

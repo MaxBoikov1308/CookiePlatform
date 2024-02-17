@@ -14,10 +14,6 @@ class Object:
         self.ISACTIVE = False
 
     def draw(self, screen):
-        # make active next comment to show blocks with collision
-        # if self.ISCOLLIDE:
-            # pg.draw.rect(screen, self.color, self.rect)
-            # return
         screen.blit(self.sprite, (self.x, self.y))
     
     def set_active(self):
@@ -39,7 +35,15 @@ class Enemy(Object):
     def __init__(self, x, y, w, h, object_type):
         super().__init__(x, y, w, h, object_type)
         self.color = (255, 0, 0)
-        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/enemy1.png"), (GRID_SIZE, GRID_SIZE))
+        self.PHASE = 0
+        self.sprite1 = pg.transform.scale(pg.image.load("files/images/objects/enemy1.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite2 = pg.transform.scale(pg.image.load("files/images/objects/enemy2.png"), (GRID_SIZE, GRID_SIZE - GRID_SIZE * 0.1))
+
+    def draw(self, screen):
+        if self.PHASE < 10:
+            screen.blit(self.sprite1, (self.x, self.y))
+        else:
+            screen.blit(self.sprite2, (self.x, self.y + GRID_SIZE * 0.1))
 
 
 class Cookie(Object):

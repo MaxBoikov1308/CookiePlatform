@@ -1,41 +1,49 @@
-import pygame as pg
-from peewee import SqliteDatabase, Model, TextField, IntegerField
 from files.scripts.objects import *
-
-db = SqliteDatabase("files/levels/level1.db")
-
-class Level(Model):
-    Object_type = TextField()
-    x = IntegerField()
-    y = IntegerField()
-    h = IntegerField()
-    w = IntegerField()
-
-    class Meta:
-        database = db
+from files.levels.level1 import Level1
+from files.levels.level2 import Level2
+import pygame as pg
 
 
 class Builder:
     def __init__(self, screen):
-        self.level = Level
-        self.objects = self.load_objects_from_db()
         self.screen = screen
+        self.level_number = 1
+        self.objects = self.load_objects_from_db()
+        self.bg1 = pg.transform.scale(pg.image.load("files/images/backgrounds/jungle_background.png"), (1920, 1080))
+        self.bg2 = pg.transform.scale(pg.image.load("files/images/backgrounds/forest_background.png"), (1920, 1080))
+        self.bg3 = pg.transform.scale(pg.image.load("files/images/backgrounds/forest_background_2.png"), (1920, 1080))
+        self.bg4 = pg.transform.scale(pg.image.load("files/images/backgrounds/mounts_background.png"), (1920, 1080))
 
     def load_objects_from_db(self):
         objects = []
-        for obj in Level.select():
-            if obj.Object_type == "block":
-                objects.append(Block(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
-            elif obj.Object_type == "enemy":
-                objects.append(Enemy(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
-            elif obj.Object_type == "cookie":
-                objects.append(Cookie(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
-            elif obj.Object_type == "spike":
-                objects.append(Spike(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
-            elif obj.Object_type == "start":
-                objects.append(Start(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
-            elif obj.Object_type == "finish":
-                objects.append(Finish(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+        if self.level_number == 1:
+            for obj in Level1.select():
+                if obj.Object_type == "block":
+                    objects.append(Block(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "enemy":
+                    objects.append(Enemy(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "cookie":
+                    objects.append(Cookie(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "spike":
+                    objects.append(Spike(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "start":
+                    objects.append(Start(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "finish":
+                    objects.append(Finish(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+        else:
+            for obj in Level2.select():
+                if obj.Object_type == "block":
+                    objects.append(Block(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "enemy":
+                    objects.append(Enemy(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "cookie":
+                    objects.append(Cookie(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "spike":
+                    objects.append(Spike(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "start":
+                    objects.append(Start(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
+                elif obj.Object_type == "finish":
+                    objects.append(Finish(obj.x, obj.y, obj.w, obj.h, obj.Object_type))
         return objects
 
     def draw(self):
@@ -46,3 +54,13 @@ class Builder:
         for obj in self.objects:
             if obj.Object_type == "start":
                 return obj.x + 5, obj.y - 25
+    
+    def choose_bg(self, n):
+        if n == 1:
+            return self.bg1
+        elif n == 2:
+            return self.bg2
+        elif n == 3:
+            return self.bg3
+        elif n == 4:
+            return self.bg4

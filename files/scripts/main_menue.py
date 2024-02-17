@@ -35,7 +35,7 @@ class Menue:
                              pg.transform.scale(pg.image.load("files/images/buttons/exit_pressed.png"), (400, 110))]
         self.exit_rect = self.exit_button[0].get_rect(center=(960, 1000))
     
-    def draw(self):
+    def draw(self, start=False, levels=False, settings=False, redactor=False, scores=False, exit=False):
         self.SCREEN.blit(self.bg, (0, 0))
         self.SCREEN.blit(self.logo, (800, 20))
         self.SCREEN.blit(self.text_logo, (680, 250))
