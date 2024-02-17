@@ -3,18 +3,13 @@ import pygame as pg
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout, QComboBox
 from peewee import SqliteDatabase, Model, TextField, IntegerField
 from files.scripts.objects import *
+from files.levels.level2 import Level2
+from files.levels.level1 import Level1
 
-db = SqliteDatabase("files/levels/level1.db")
 
-class Level(Model):
-    Object_type = TextField()
-    x = IntegerField()
-    y = IntegerField()
-    h = IntegerField()
-    w = IntegerField()
+currect_level = Level2
+db = SqliteDatabase(f"files/levels/level2.db")
 
-    class Meta:
-        database = db
 
 class MapBuilder(QWidget):
     def __init__(self):
@@ -58,7 +53,6 @@ class MapBuilder(QWidget):
         self.setLayout(layout)
         self.setWindowTitle("Map Builder")
         self.show()
-        self.show_result_window()
 
     def save_to_database(self):
         object_type = self.object_type_combobox.currentText()
@@ -80,7 +74,6 @@ class MapBuilder(QWidget):
         clock = pg.time.Clock()
 
         objects = Level.select()
-        
 
         while True:
             for event in pg.event.get():
