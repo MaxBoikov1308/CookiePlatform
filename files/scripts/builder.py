@@ -11,8 +11,7 @@ class Builder:
         self.objects = self.load_objects_from_db()
         self.bg1 = pg.transform.scale(pg.image.load("files/images/backgrounds/jungle_background.png"), (1920, 1080))
         self.bg2 = pg.transform.scale(pg.image.load("files/images/backgrounds/forest_background.png"), (1920, 1080))
-        self.bg3 = pg.transform.scale(pg.image.load("files/images/backgrounds/forest_background_2.png"), (1920, 1080))
-        self.bg4 = pg.transform.scale(pg.image.load("files/images/backgrounds/mounts_background.png"), (1920, 1080))
+        self.bg3 = pg.transform.scale(pg.image.load("files/images/backgrounds/forest_background.png"), (1920, 1080))
 
     def load_objects_from_db(self):
         objects = []
@@ -57,10 +56,17 @@ class Builder:
     
     def choose_bg(self, n):
         if n == 1:
+            for obj in self.objects:
+                if obj.Object_type == "block":
+                    obj.active_sprite = obj.sprite1
             return self.bg1
         elif n == 2:
+            for obj in self.objects:
+                if obj.Object_type == "block":
+                    obj.active_sprite = obj.sprite2
             return self.bg2
         elif n == 3:
+            for obj in self.objects:
+                if obj.Object_type == "block":
+                    obj.active_sprite = obj.sprite3
             return self.bg3
-        elif n == 4:
-            return self.bg4

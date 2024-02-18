@@ -26,7 +26,7 @@ class Game:
         self.menue = Menue(self.SCREEN, self.BUTTON_SOUND)
         self.player = Player(self.builder.get_start_coords()[0], self.builder.get_start_coords()[1], self.SCREEN)
         self.interface = Interface(self.SCREEN)
-        self.bg = self.builder.choose_bg(randint(1, 4))
+        self.bg = self.builder.choose_bg(randint(1, 3))
 
         self.IS_PAUSE = False
         self.change_music(self.menue.ISGAME)
@@ -97,7 +97,7 @@ class Game:
                             if pg.Rect.colliderect(self.menue.start_rect, self.mousepos):
                                 self.menue.button_sound.play()
                                 self.menue.ISGAME = True
-                                self.bg = self.builder.choose_bg(randint(1, 4))
+                                self.bg = self.builder.choose_bg(randint(1, 3))
                                 self.change_music(self.menue.ISGAME)
                             if pg.Rect.colliderect(self.menue.exit_rect, self.mousepos):
                                 self.menue.button_sound.play()
@@ -132,11 +132,11 @@ class Game:
             obj.set_active()
     
     def change_to_menu(self):
-        if self.builder.level_number == 1 and not self.IS_PAUSE:
+        if self.builder.level_number == 1 and not self.IS_PAUSE and self.player.hp > 0:
             self.builder.level_number = 2
             self.builder.objects = self.builder.load_objects_from_db()
             self.player.X0, self.player.Y0 = self.builder.get_start_coords()[0], self.builder.get_start_coords()[1]
-            self.bg = self.builder.choose_bg(randint(1, 4))
+            self.bg = self.builder.choose_bg(randint(1, 3))
             self.player.respawn()
         else:
             self.menue.ISGAME = False

@@ -116,7 +116,7 @@ class Player:
             self.ISSTAND = False
             self.ISRIGHT = False
         
-        if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION < 0 or self.Y_POSITION > 1080 - PLAYER_H:
+        if self.X_POSITION < 0 or self.X_POSITION > 1920 - PLAYER_W or self.Y_POSITION > 1080 - PLAYER_H:
             self.respawn()
             self.hp -= 1
 

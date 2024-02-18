@@ -28,7 +28,13 @@ class Block(Object):
     def __init__(self, x, y, w, h, object_type):
         super().__init__(x, y, w, h, object_type)
         self.color = (100, 100, 100)
-        self.sprite = pg.transform.scale(pg.image.load("files/images/objects/block.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite1 = pg.transform.scale(pg.image.load("files/images/objects/block1.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite2 = pg.transform.scale(pg.image.load("files/images/objects/block2.png"), (GRID_SIZE, GRID_SIZE))
+        self.sprite3 = pg.transform.scale(pg.image.load("files/images/objects/block3.png"), (GRID_SIZE, GRID_SIZE))
+        self.active_sprite = self.sprite1
+    
+    def draw(self, screen):
+        screen.blit(self.active_sprite, (self.x, self.y))
 
 
 class Enemy(Object):
