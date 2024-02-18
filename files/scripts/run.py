@@ -52,6 +52,7 @@ class Game:
                                 self.IS_PAUSE = True
                         elif e.key == pg.K_r:
                             self.player.respawn()
+                            self.player.hp -= 1
                             self.player.draw()
                     if e.type == pg.MOUSEBUTTONDOWN:
                         if e.button == 1:
