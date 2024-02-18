@@ -20,7 +20,7 @@ class MapBuilder(QWidget):
     def initUI(self):
         self.object_type_label = QLabel("Object Type:")
         self.object_type_combobox = QComboBox()
-        self.object_type_combobox.addItems(["block", "cookie", "finish", "start", "enemy"])
+        self.object_type_combobox.addItems(["block", "cookie", "finish", "start", "enemy", "spike"])
         
         self.x_label = QLabel("X:")
         self.x_edit = QLineEdit()
@@ -56,12 +56,12 @@ class MapBuilder(QWidget):
 
     def save_to_database(self):
         object_type = self.object_type_combobox.currentText()
-        x = int(self.x_edit.text())
-        y = int(self.y_edit.text())
-        width = int(self.width_edit.text())
-        height = int(self.height_edit.text())
+        x = int(self.x_edit.text()) * 50
+        y = int(self.y_edit.text()) * 50
+        width = int(self.width_edit.text()) * 50
+        height = int(self.height_edit.text()) * 50
 
-        Level.create(Object_type=object_type, x=x, y=y, w=width, h=height)
+        currect_level.create(Object_type=object_type, x=x, y=y, w=width, h=height)
         self.show_result_window()
 
     def show_result_window(self):
@@ -73,7 +73,7 @@ class MapBuilder(QWidget):
 
         clock = pg.time.Clock()
 
-        objects = Level.select()
+        objects = currect_level.select()
 
         while True:
             for event in pg.event.get():
@@ -81,29 +81,26 @@ class MapBuilder(QWidget):
                     pg.quit()
                     sys.exit()
 
-            # Clear the screen
+
             screen.fill((0, 0, 0))
 
-            # Draw each object with different colors based on type
             for obj in objects:
                 color = (255, 255, 255)  # Default color
                 if obj.Object_type == "block":
-                    color = (255, 0, 0)  # Red for blocks
+                    color = (255, 0, 0)  # Red color
                 elif obj.Object_type == "cookie":
-                    color = (0, 255, 0)  # Green for cookies
+                    color = (0, 255, 0)  # Green color
                 elif obj.Object_type == "finish":
-                    color = (0, 0, 255)  # Blue for finish
+                    color = (0, 0, 255)  # Blue color
                 elif obj.Object_type == "start":
-                    color = (255, 255, 0)  # Yellow for start
+                    color = (255, 255, 0)  # Yellow color
                 elif obj.Object_type == "enemy":
-                    color = (255, 0, 255)  # Magenta for enemies
+                    color = (255, 0, 255)  # Magenta color
+                elif obj.Object_type == "spike":
+                    color = (0, 255, 255)  # Cyan color
 
                 pg.draw.rect(screen, color, (obj.x / 5, obj.y / 5, obj.w / 5, obj.h / 5))
-
-            # Update the display
             pg.display.flip()
-
-            # Cap the frame rate
             clock.tick(60)
 
 if __name__ == '__main__':
