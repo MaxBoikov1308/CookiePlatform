@@ -7,7 +7,7 @@ class Interface:
         self.heart = pg.transform.scale(pg.image.load("files/images/interface/heart_full.png"), (50, 50))
         self.heart_hollow = pg.transform.scale(pg.image.load("files/images/interface/heart_hollow.png"), (50, 50))
         self.screen = screen
-        self.coords = ((855, 900), (925, 900), (995, 900))
+        self.coords = ((1680, 1000), (1750, 1000), (1820, 1000))
 
     def draw(self, hp):
         if hp >= 1:
